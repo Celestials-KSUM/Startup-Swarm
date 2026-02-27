@@ -27,6 +27,8 @@ export const metadata: Metadata = {
   description: "Autonomous AI agents analyze, debate, and evaluate your startup idea — delivering a real go/no-go decision, roadmap, and risk assessment.",
 };
 
+import { Providers } from "@/components/Providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,9 +39,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} ${sora.variable} ${dmSans.variable} antialiased bg-white text-[#111827]`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
 

@@ -1,15 +1,7 @@
-// Register page — thin orchestrator: state + handlers only, renders LeftPanel + RegisterForm
+// Register page — thin orchestrator: renders LeftPanel + RegisterForm
 'use client';
 import LeftPanel from '@/components/login/LeftPanel';
 import RegisterForm from '@/components/login/RegisterForm';
-
-async function handleRegister(username: string, email: string, password: string): Promise<string | null> {
-    // Replace with real registration call:
-    // const result = await signUp({ username, email, password });
-    await new Promise(r => setTimeout(r, 1000));
-    if (email.includes('error')) return 'Registration failed. This email is already in use.';
-    return null;
-}
 
 export default function RegisterPage() {
     return (
@@ -18,7 +10,7 @@ export default function RegisterPage() {
             <LeftPanel />
 
             {/* Right panel: the register form */}
-            <RegisterForm onSubmit={handleRegister} />
+            <RegisterForm />
         </div>
     );
 }

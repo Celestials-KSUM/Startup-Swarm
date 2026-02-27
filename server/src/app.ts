@@ -9,6 +9,9 @@ import adminRouter from "./routes/adminRouter";
 import aiRouter from "./routes/aiRouter";
 import { errorHandler } from "./middlewares/error.middleware";
 import config from "./config/env";
+import authRouter from "./routes/auth.routes";
+import passport from "passport";
+import "./config/passport";
 
 const app: Application = express();
 
@@ -35,6 +38,7 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(passport.initialize());
 
 if (config.NODE_ENV === "development") {
     app.use(
@@ -56,6 +60,8 @@ app.get("/health", (_req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/ai", aiRouter);
+app.use("/api/auth", authRouter);
+
 
 app.use(errorHandler);
 
