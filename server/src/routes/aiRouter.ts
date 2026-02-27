@@ -55,6 +55,24 @@ aiRouter.post("/chat", async (req: Request, res: Response) => {
                 created_at: new Date()
             });
 
+            // If website_builder result exists, save to Websites collection
+            if (executionData.website_builder && !executionData.website_builder.error) {
+                const WebsiteModel = (await import("../models/website.model")).default;
+                const websiteData = executionData.website_builder;
+
+                await WebsiteModel.findOneAndUpdate(
+                    { slug: websiteData.slug },
+                    {
+                        slug: websiteData.slug,
+                        owner_thread_id: id,
+                        template: websiteData.template,
+                        data: websiteData.config,
+                        created_at: new Date()
+                    },
+                    { upsert: true, new: true }
+                );
+            }
+
             res.json({ response: JSON.stringify(blueprintData) });
         } else {
             // Discovery Phase

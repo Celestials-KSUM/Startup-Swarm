@@ -21,6 +21,7 @@ import { blueprintNode } from "./predictive/blueprint";
 import { companyRegistrationNode } from "./execution/registration";
 import { outreachNode } from "./execution/outreach";
 import { investorOutreachNode } from "./execution/investor_outreach";
+import { websiteBuilderNode } from "./execution/website_builder";
 
 export const createStartupSwarm = () => {
     // Build the Graph using chaining for proper TS inference
@@ -45,6 +46,7 @@ export const createStartupSwarm = () => {
         .addNode("registration", companyRegistrationNode)
         .addNode("outreach", outreachNode)
         .addNode("investor", investorOutreachNode)
+        .addNode("website_builder", websiteBuilderNode)
 
         // Initial Fan-Out to Predictive Nodes
         .addEdge(START, "market")
@@ -80,11 +82,13 @@ export const createStartupSwarm = () => {
         .addEdge("blueprint_node", "registration")
         .addEdge("blueprint_node", "outreach")
         .addEdge("blueprint_node", "investor")
+        .addEdge("blueprint_node", "website_builder")
 
         // Fan-In to END from Execution Nodes
         .addEdge("registration", END)
         .addEdge("outreach", END)
-        .addEdge("investor", END);
+        .addEdge("investor", END)
+        .addEdge("website_builder", END);
 
     return builder.compile();
 };

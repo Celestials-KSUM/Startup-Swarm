@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 import {
     Loader2,
     BarChart3,
@@ -77,10 +78,31 @@ export default function ArchitectPage() {
                 threadId: threadId
             });
 
-            const content = response.data.response;
-            setBlueprint(JSON.parse(content));
+            const blueprintData = JSON.parse(response.data.response);
+            setBlueprint(blueprintData);
             setView("blueprint");
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Auto-launch handling
+            if (blueprintData.execution?.website_builder?.url) {
+                toast.success("Website Swarm completed!", {
+                    description: `Launching ${blueprintData.execution.website_builder.config?.brandName || 'your startup website'}...`,
+                    duration: 5000,
+                });
+
+                const url = blueprintData.execution.website_builder.url;
+                // Try to open, if blocked, the user has the card to click
+                const win = window.open(url, '_blank');
+                if (!win || win.closed || typeof win.closed == 'undefined') {
+                    toast.info("Pop-up blocked", {
+                        description: "Please click the 'Launch' button in the blueprint to view your website.",
+                    });
+                }
+            } else {
+                toast.info("Blueprint Ready", {
+                    description: "Strategic analysis completed successfully.",
+                });
+            }
         } catch (error) {
             console.error("Blueprint error:", error);
             alert("Strategic connection lost. Please try again.");
@@ -134,6 +156,43 @@ export default function ArchitectPage() {
 
                     <div className="grid lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2 space-y-8">
+                            {/* Execution Agent: Website Builder */}
+                            {blueprint.execution?.website_builder && (
+                                <div className="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-8 text-white shadow-xl hover:shadow-2xl transition-all group overflow-hidden relative mb-8">
+                                    <div className="absolute top-0 right-0 p-12 -translate-y-1/2 translate-x-1/2 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all"></div>
+                                    <div className="relative z-10">
+                                        <h3 className="text-xl font-black mb-4 flex items-center gap-3">
+                                            <Globe className="w-6 h-6" />
+                                            Digital Presence Engine
+                                            <span className="flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider animate-pulse">
+                                                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                                                Ready
+                                            </span>
+                                        </h3>
+                                        <p className="text-blue-100 mb-8 max-w-sm text-sm font-medium leading-relaxed">
+                                            Our AI has designed and deployed a custom high-conversion website for <strong>{blueprint.execution.website_builder.config?.brandName || form.startup_name}</strong>.
+                                        </p>
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                            <a
+                                                href={blueprint.execution.website_builder.url}
+                                                target="_blank"
+                                                className="px-8 py-3 bg-white text-indigo-600 rounded-xl font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform inline-flex items-center gap-2"
+                                            >
+                                                Launch Website <Zap className="w-4 h-4 fill-current" />
+                                            </a>
+                                            <div className="flex flex-col gap-1">
+                                                <div className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+                                                    Template: {blueprint.execution.website_builder.template}
+                                                </div>
+                                                <div className="text-[10px] font-mono text-white/40 break-all select-all cursor-copy" title="Click to copy">
+                                                    http://localhost:3000{blueprint.execution.website_builder.url}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Execution Agent: Company Registration */}
                             {blueprint.execution?.registration && (
                                 <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all">
