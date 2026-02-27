@@ -4,15 +4,13 @@ import { AgentStateSchema } from "./state";
 // Import Predictive Agents
 import { marketResearchNode } from "./predictive/market_research";
 import { competitionIntelNode } from "./predictive/competition_intel";
-import { executionRiskNode } from "./predictive/execution_risk";
+import { techExecutionNode } from "./predictive/tech_execution";
 import { pmfNode } from "./predictive/pmf";
-import { techFeasibilityNode } from "./predictive/tech_feasibility";
 import { fundingNode } from "./predictive/funding";
 import { legalNode } from "./predictive/legal";
-import { gtmNode } from "./predictive/gtm";
+import { gtmImpactNode } from "./predictive/gtm_impact";
 import { economicsNode } from "./predictive/economics";
 import { scalabilityNode } from "./predictive/scalability";
-import { impactNode } from "./predictive/impact";
 import { supplyChainNode } from "./predictive/supply_chain";
 import { dataAiNode } from "./predictive/data_ai";
 import { blueprintNode } from "./predictive/blueprint";
@@ -28,15 +26,13 @@ export const createStartupSwarm = () => {
         // Add Predictive Nodes
         .addNode("market", marketResearchNode)
         .addNode("competition", competitionIntelNode)
-        .addNode("execution", executionRiskNode)
+        .addNode("tech_execution", techExecutionNode)
         .addNode("pmf", pmfNode)
-        .addNode("tech", techFeasibilityNode)
         .addNode("funding", fundingNode)
         .addNode("legal", legalNode)
-        .addNode("gtm", gtmNode)
+        .addNode("gtm_impact", gtmImpactNode)
         .addNode("economics", economicsNode)
         .addNode("scalability", scalabilityNode)
-        .addNode("impact", impactNode)
         .addNode("supply_chain", supplyChainNode)
         .addNode("data_ai", dataAiNode)
         .addNode("blueprint_node", blueprintNode)
@@ -49,30 +45,26 @@ export const createStartupSwarm = () => {
         // Initial Fan-Out to Predictive Nodes
         .addEdge(START, "market")
         .addEdge(START, "competition")
-        .addEdge(START, "execution")
+        .addEdge(START, "tech_execution")
         .addEdge(START, "pmf")
-        .addEdge(START, "tech")
         .addEdge(START, "funding")
         .addEdge(START, "legal")
-        .addEdge(START, "gtm")
+        .addEdge(START, "gtm_impact")
         .addEdge(START, "economics")
         .addEdge(START, "scalability")
-        .addEdge(START, "impact")
         .addEdge(START, "supply_chain")
         .addEdge(START, "data_ai")
 
         // Fan-In to Blueprint Node
         .addEdge("market", "blueprint_node")
         .addEdge("competition", "blueprint_node")
-        .addEdge("execution", "blueprint_node")
+        .addEdge("tech_execution", "blueprint_node")
         .addEdge("pmf", "blueprint_node")
-        .addEdge("tech", "blueprint_node")
         .addEdge("funding", "blueprint_node")
         .addEdge("legal", "blueprint_node")
-        .addEdge("gtm", "blueprint_node")
+        .addEdge("gtm_impact", "blueprint_node")
         .addEdge("economics", "blueprint_node")
         .addEdge("scalability", "blueprint_node")
-        .addEdge("impact", "blueprint_node")
         .addEdge("supply_chain", "blueprint_node")
         .addEdge("data_ai", "blueprint_node")
 

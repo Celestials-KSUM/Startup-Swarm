@@ -26,3 +26,8 @@
 2026-02-28 00:38:58 [info]: 🚀 Server running in development mode on port 5000
 2026-02-28 00:39:16 [http]: [0mPOST /api/ai/chat [32m200[0m 1153.322 ms - 899[0m
 2026-02-28 00:39:43 [http]: [0mPOST /api/ai/chat [32m200[0m 18470.155 ms - 10162[0m
+2026-02-28 01:20:48 [info]: ✅ MongoDB connected Successfully
+2026-02-28 01:20:48 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 01:22:11 [error]: 500 - Not allowed by CORS - /api/ai/chat - OPTIONS - ::1
+2026-02-28 01:23:36 [http]: [0mPOST /api/ai/chat [32m200[0m 1168.534 ms - 885[0m
+2026-02-28 01:23:57 [http]: [0mPOST /api/ai/chat [32m200[0m 7512.956 ms - 10726[0m
