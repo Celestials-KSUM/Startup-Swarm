@@ -23,8 +23,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Startup Swarm | AI-Powered Multi-Agent Startup Accelerator",
-  description: "Autonomous AI agents analyze, debate, and evaluate your startup idea — delivering a real go/no-go decision, roadmap, and risk assessment.",
+  title: "Startup Swarm | Removing the Fear of Starting a Business",
+  description: "Startup Swarm removes the fear of starting a business. Our autonomous AI agents don't just analyze — we start the business for you.",
 };
 
 import { Providers } from "@/components/Providers";

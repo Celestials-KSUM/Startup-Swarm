@@ -56,7 +56,7 @@ export default function RegisterForm() {
         <div className="flex-1 flex flex-col justify-center px-8 py-12 md:px-16 bg-[#F5F7FA]">
             <div className="mx-auto w-full max-w-md">
                 <h1 className="font-sora font-bold text-[2rem] text-[#0B1220] mb-1.5">Create account</h1>
-                <p className="text-slate-500 mb-8 text-[0.95rem]">Join StartupSwarm to launch your idea</p>
+                <p className="text-slate-500 mb-8 text-[0.95rem]">Join StartupSwarm to remove the fear and start your business today.</p>
 
                 {/* OAuth */}
                 <div className="mb-6">

@@ -45,12 +45,12 @@ export default function Home() {
           {/* Hero Content */}
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-6xl md:text-8xl font-bold leading-tight mb-8 tracking-tight text-[#111827]">
-              Agentic AI <br />
-              <span className="text-gray-800">Accelerator</span> <br />
-              Decisions.
+              Stop Fearing, <br />
+              <span className="text-gray-800">Start Building.</span> <br />
+              We Launch It.
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto font-medium">
-              Autonomous AI agents analyze, debate, and evaluate your startup idea — delivering a real go/no-go decision and roadmap.
+              Startup Swarm removes the fear of entrepreneurship. We don't just analyze your idea — we start the business for you.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link href="/architect" className="px-10 py-5 bg-[#111827] text-white rounded-full font-bold hover:bg-black transition-all uppercase tracking-[0.2em] text-xs flex items-center gap-3 shadow-xl shadow-gray-900/10 active:scale-95">
@@ -66,18 +66,18 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8 mt-40">
             {[
               {
-                title: "Pre-seed Validation",
-                desc: "Use agents for Market, Tech, Funding, and Legal due diligence today.",
+                title: "Zero-Fear Execution",
+                desc: "We take your spark and turn it into a registered, ready-to-scale business while you sleep.",
                 icon: <Zap className="w-5 h-5 text-gray-400" />
               },
               {
-                title: "Accelerator Orchestrators",
-                desc: "Leverage our Marketplace of pre-built AI agents, templates, and frameworks.",
+                title: "Autonomous Building",
+                desc: "Our agents don't just talk; they code, design, and launch your MVP automatically.",
                 icon: <Layers className="w-5 h-5 text-gray-400" />
               },
               {
-                title: "Tailored Analysis",
-                desc: "Design / build custom agents on our Swarm Platform across all niche verticals.",
+                title: "End-to-End Launch",
+                desc: "From legal formation to first customer acquisition, the swarm handles the heavy lifting.",
                 icon: <Settings className="w-5 h-5 text-gray-400" />
               }
             ].map((card, i) => (
@@ -104,8 +104,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="max-w-xl">
-              <h2 className="text-4xl font-bold mb-4 tracking-tight">Meet the Specialized Agents</h2>
-              <p className="text-gray-600 font-medium">Your specialized board of directors, active 24/7, delivering institutional-grade validation.</p>
+              <h2 className="text-4xl font-bold mb-4 tracking-tight">Meet the Execution Swarm</h2>
+              <p className="text-gray-600 font-medium">Your specialized board of directors, active 24/7, building your business from the ground up.</p>
             </div>
             <button className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-blue-600 hover:text-blue-800">
               Explore Agent Marketplace <ArrowRight className="w-4 h-4" />
@@ -170,10 +170,10 @@ export default function Home() {
           </div>
           <div className="space-y-8">
             <h2 className="text-5xl font-bold tracking-tight text-[#111827]">
-              Where AI Agents Disagree, <span className="text-blue-600 italic">Innovation Begins.</span>
+              From Idea to <span className="text-blue-600 italic">Execution.</span>
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed font-medium">
-              Startup Swarm doesn&apos;t just average opinions. It creates a synthetic debate room where specialized agents argue over strategy until the Mentor Orchestrator finds the winning pivot.
+              Startup Swarm removes the complexity of starting up. Our agents collaborate to automate every step of the process, ensuring your business is ready for the real world.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-gray-900 font-bold">
@@ -206,7 +206,7 @@ export default function Home() {
                 <span className="text-xl font-bold tracking-tight">Startup Swarm</span>
               </div>
               <p className="text-gray-500 leading-relaxed">
-                The leading analyst-recognized AI agent platform for startup validation.
+                The AI platform that removes the fear of starting a business by building it for you.
               </p>
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-[#111827] cursor-pointer"><ArrowRight className="w-4 h-4" /></div>
