@@ -10,16 +10,19 @@ import { logout } from "@/redux/slices/authSlice";
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     const { token, user } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
+        setMounted(true);
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
 
     const handleLogout = () => {
         dispatch(logout());
@@ -68,7 +71,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex items-center gap-3 text-sm font-medium">
-                        {token && user ? (
+                        {!mounted ? null : token && user ? (
                             <div className="flex items-center gap-4">
                                 <span className="text-[#111827] font-semibold bg-gray-100 px-4 py-2 rounded-full border border-gray-200">
                                     {getEmailPrefix(user.email)}
@@ -99,6 +102,7 @@ export default function Navbar() {
                                 </Link>
                             </>
                         )}
+
                         <button className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                             <Menu className="w-6 h-6" />
                         </button>

@@ -7,7 +7,8 @@ import { toast } from 'sonner';
 
 import { Suspense } from 'react';
 
-import { setToken } from '@/redux/slices/authSlice';
+import { setCredentials } from '@/redux/slices/authSlice';
+import { jwtDecode } from 'jwt-decode';
 
 function AuthSuccessContent() {
     const router = useRouter();
@@ -17,15 +18,25 @@ function AuthSuccessContent() {
     useEffect(() => {
         const token = searchParams.get('token');
         if (token) {
-            dispatch(setToken(token));
-            toast.success('Social login successful!');
-            router.push('/');
+            try {
+                const decoded: any = jwtDecode(token);
+                // The backend sends { id, email } in token payload
+                dispatch(setCredentials({
+                    token,
+                    user: { id: decoded.id, email: decoded.email }
+                }));
+                toast.success('Social login successful!');
+                router.push('/');
+            } catch (error) {
+                toast.error('Invalid token received');
+                router.push('/login');
+            }
         } else {
-
             toast.error('Authentication failed');
             router.push('/login');
         }
-    }, [searchParams, router]);
+    }, [searchParams, router, dispatch]);
+
 
     return (
         <div className="flex items-center justify-center min-h-screen">
