@@ -1,20 +1,10 @@
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { AgentStateSchema } from "./state";
 
-// Import Predictive Agents
-import { marketResearchNode } from "./predictive/market_research";
-import { competitionIntelNode } from "./predictive/competition_intel";
-import { executionRiskNode } from "./predictive/execution_risk";
-import { pmfNode } from "./predictive/pmf";
-import { techFeasibilityNode } from "./predictive/tech_feasibility";
-import { fundingNode } from "./predictive/funding";
-import { legalNode } from "./predictive/legal";
-import { gtmNode } from "./predictive/gtm";
-import { economicsNode } from "./predictive/economics";
-import { scalabilityNode } from "./predictive/scalability";
-import { impactNode } from "./predictive/impact";
-import { supplyChainNode } from "./predictive/supply_chain";
-import { dataAiNode } from "./predictive/data_ai";
+// Import Predictive Grouped Agents
+import { marketStrategyNode } from "./predictive/market_strategy";
+import { techOpsNode } from "./predictive/tech_ops";
+import { riskSustainabilityNode } from "./predictive/risk_sustainability";
 import { blueprintNode } from "./predictive/blueprint";
 
 // Import Execution Agents
@@ -26,20 +16,10 @@ import { websiteBuilderNode } from "./execution/website_builder";
 export const createStartupSwarm = () => {
     // Build the Graph using chaining for proper TS inference
     const builder = new StateGraph(AgentStateSchema)
-        // Add Predictive Nodes
-        .addNode("market", marketResearchNode)
-        .addNode("competition", competitionIntelNode)
-        .addNode("execution", executionRiskNode)
-        .addNode("pmf", pmfNode)
-        .addNode("tech", techFeasibilityNode)
-        .addNode("funding", fundingNode)
-        .addNode("legal", legalNode)
-        .addNode("gtm", gtmNode)
-        .addNode("economics", economicsNode)
-        .addNode("scalability", scalabilityNode)
-        .addNode("impact", impactNode)
-        .addNode("supply_chain", supplyChainNode)
-        .addNode("data_ai", dataAiNode)
+        // Add Predictive Grouped Nodes
+        .addNode("market_strategy", marketStrategyNode)
+        .addNode("tech_ops", techOpsNode)
+        .addNode("risk_sustainability", riskSustainabilityNode)
         .addNode("blueprint_node", blueprintNode)
 
         // Add Execution Nodes
@@ -48,35 +28,15 @@ export const createStartupSwarm = () => {
         .addNode("investor", investorOutreachNode)
         .addNode("website_builder", websiteBuilderNode)
 
-        // Initial Fan-Out to Predictive Nodes
-        .addEdge(START, "market")
-        .addEdge(START, "competition")
-        .addEdge(START, "execution")
-        .addEdge(START, "pmf")
-        .addEdge(START, "tech")
-        .addEdge(START, "funding")
-        .addEdge(START, "legal")
-        .addEdge(START, "gtm")
-        .addEdge(START, "economics")
-        .addEdge(START, "scalability")
-        .addEdge(START, "impact")
-        .addEdge(START, "supply_chain")
-        .addEdge(START, "data_ai")
+        // Initial Fan-Out to Predictive Groups
+        .addEdge(START, "market_strategy")
+        .addEdge(START, "tech_ops")
+        .addEdge(START, "risk_sustainability")
 
-        // Fan-In to Blueprint Node
-        .addEdge("market", "blueprint_node")
-        .addEdge("competition", "blueprint_node")
-        .addEdge("execution", "blueprint_node")
-        .addEdge("pmf", "blueprint_node")
-        .addEdge("tech", "blueprint_node")
-        .addEdge("funding", "blueprint_node")
-        .addEdge("legal", "blueprint_node")
-        .addEdge("gtm", "blueprint_node")
-        .addEdge("economics", "blueprint_node")
-        .addEdge("scalability", "blueprint_node")
-        .addEdge("impact", "blueprint_node")
-        .addEdge("supply_chain", "blueprint_node")
-        .addEdge("data_ai", "blueprint_node")
+        // Fan-In to Blueprint Node from Groups
+        .addEdge("market_strategy", "blueprint_node")
+        .addEdge("tech_ops", "blueprint_node")
+        .addEdge("risk_sustainability", "blueprint_node")
 
         // Fan-Out to Execution Nodes
         .addEdge("blueprint_node", "registration")

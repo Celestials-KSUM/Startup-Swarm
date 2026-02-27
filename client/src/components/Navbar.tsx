@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { BrainCircuit, ChevronDown, ArrowRight, Menu } from "lucide-react";
-import { useState, useEffect } from "react";
+import { BrainCircuit, ChevronDown, ArrowRight, Menu, User, History, LogOut } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
@@ -11,16 +11,31 @@ import { logout } from "@/redux/slices/authSlice";
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch<AppDispatch>();
     const { token, user } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
+    }, []);
+
+    useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
         };
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
+            }
+        };
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, []);
 
 
@@ -72,16 +87,45 @@ export default function Navbar() {
 
                     <div className="flex items-center gap-3 text-sm font-medium">
                         {!mounted ? null : token && user ? (
-                            <div className="flex items-center gap-4">
-                                <span className="text-[#111827] font-semibold bg-gray-100 px-4 py-2 rounded-full border border-gray-200">
-                                    {getEmailPrefix(user.email)}
-                                </span>
+                            <div className="relative" ref={dropdownRef}>
                                 <button
-                                    onClick={handleLogout}
-                                    className="px-6 py-2.5 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-all font-semibold border border-red-100"
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors"
                                 >
-                                    Logout
+                                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                        <User className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-[#111827] font-semibold text-sm">
+                                        {getEmailPrefix(user.email)}
+                                    </span>
+                                    <ChevronDown className={`w-4 h-4 transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
                                 </button>
+
+                                {isProfileOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+                                        <div className="p-2">
+                                            <Link
+                                                href="/history"
+                                                onClick={() => setIsProfileOpen(false)}
+                                                className="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
+                                            >
+                                                <History className="w-4 h-4" />
+                                                <span className="font-medium">My History</span>
+                                            </Link>
+                                            <div className="h-px bg-gray-100 my-1"></div>
+                                            <button
+                                                onClick={() => {
+                                                    handleLogout();
+                                                    setIsProfileOpen(false);
+                                                }}
+                                                className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
+                                            >
+                                                <LogOut className="w-4 h-4" />
+                                                <span className="font-medium">Logout</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <>

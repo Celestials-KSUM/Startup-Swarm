@@ -2,10 +2,13 @@ import { Router, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import { createStartupSwarm, getDiscoveryInsight } from "../agents/startup_swarm";
+import { authMiddleware, AuthRequest, requireAuth } from "../middlewares/auth.middleware";
 
 const aiRouter = Router();
 
-aiRouter.post("/chat", async (req: Request, res: Response) => {
+aiRouter.use(authMiddleware);
+
+aiRouter.post("/chat", async (req: AuthRequest, res: Response) => {
     try {
         const { message, threadId, structuredData } = req.body;
 
@@ -49,6 +52,7 @@ aiRouter.post("/chat", async (req: Request, res: Response) => {
             // Save to MongoDB -> analyses collection
             await db.collection("analyses").insertOne({
                 thread_id: id,
+                user_id: req.user?.id || null, // Link to user if authenticated
                 type: "blueprint",
                 input_data: structuredData || message,
                 data: blueprintData,
@@ -65,6 +69,7 @@ aiRouter.post("/chat", async (req: Request, res: Response) => {
                     {
                         slug: websiteData.slug,
                         owner_thread_id: id,
+                        user_id: req.user?.id || null, // Link to user
                         template: websiteData.template,
                         data: websiteData.config,
                         created_at: new Date()
@@ -98,7 +103,7 @@ aiRouter.post("/analyze", async (req: Request, res: Response) => {
     res.redirect(307, "/api/ai/chat");
 });
 
-aiRouter.get("/history/:thread_id", async (req: Request, res: Response) => {
+aiRouter.get("/history/:thread_id", async (req: AuthRequest, res: Response) => {
     try {
         const threadId = req.params.thread_id;
         const db = mongoose.connection.db;
@@ -124,6 +129,36 @@ aiRouter.get("/history/:thread_id", async (req: Request, res: Response) => {
         res.json(analyses);
     } catch (error) {
         console.error("History Error:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+aiRouter.get("/my-history", requireAuth, async (req: AuthRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        const db = mongoose.connection.db;
+
+        if (!db) {
+            res.status(500).json({ error: "Database not initialized" });
+            return;
+        }
+
+        const cursor = db.collection("analyses").find({ user_id: userId, type: "blueprint" }).sort({ created_at: -1 });
+        const rows = await cursor.toArray();
+
+        const analyses = rows.map(record => {
+            const idStr = record._id.toString();
+            const { _id, ...rest } = record;
+            return {
+                ...rest,
+                id: idStr,
+                created_at: record.created_at ? new Date(record.created_at).toISOString() : null
+            };
+        });
+
+        res.json(analyses);
+    } catch (error) {
+        console.error("My History Error:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
