@@ -22,7 +22,7 @@ export default function FormFooter({ submitting, onSubmit }: FormFooterProps) {
             transition-all duration-200 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2">
                     {submitting
                         ? <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing...</>
-                        : <>Generate Blueprint <ArrowRight className="w-4 h-4" /></>
+                        : <>Build Your Startup <ArrowRight className="w-4 h-4" /></>
                     }
                 </button>
             </div>
