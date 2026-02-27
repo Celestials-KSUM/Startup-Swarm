@@ -1,0 +1,28 @@
+2026-02-27 17:24:56 [info]: ✅ MongoDB connected Successfully
+2026-02-27 17:24:56 [info]: 🚀 Server running in development mode on port 5000
+2026-02-27 17:24:57 [info]: ✅ MongoDB connected Successfully
+2026-02-27 17:24:57 [info]: 🚀 Server running in development mode on port 5000
+2026-02-27 17:25:11 [info]: ✅ MongoDB connected Successfully
+2026-02-27 17:25:11 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:24:17 [info]: ✅ MongoDB connected Successfully
+2026-02-28 00:24:17 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:25:11 [http]: [0mPOST /api/ai/chat [31m500[0m 19.903 ms - 153[0m
+2026-02-28 00:26:21 [http]: [0mPOST /api/ai/chat [31m500[0m 3.393 ms - 153[0m
+2026-02-28 00:26:21 [http]: [0mPOST /api/ai/chat [31m500[0m 2.048 ms - 153[0m
+2026-02-28 00:26:22 [http]: [0mPOST /api/ai/chat [31m500[0m 1.842 ms - 153[0m
+2026-02-28 00:27:42 [info]: ✅ MongoDB connected Successfully
+2026-02-28 00:27:42 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:27:48 [http]: [0mPOST /api/ai/chat [32m200[0m 1155.564 ms - 830[0m
+2026-02-28 00:28:27 [http]: [0mPOST /api/ai/chat [31m500[0m 19.896 ms - 154[0m
+2026-02-28 00:28:31 [http]: [0mPOST /api/ai/chat [31m500[0m 1.213 ms - 154[0m
+2026-02-28 00:29:17 [info]: ✅ MongoDB connected Successfully
+2026-02-28 00:29:17 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:29:43 [info]: ✅ MongoDB connected Successfully
+2026-02-28 00:29:43 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:30:11 [http]: [0mPOST /api/ai/chat [32m200[0m 17593.710 ms - 10994[0m
+2026-02-28 00:31:20 [info]: ✅ MongoDB connected Successfully
+2026-02-28 00:31:20 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:38:58 [info]: ✅ MongoDB connected Successfully
+2026-02-28 00:38:58 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 00:39:16 [http]: [0mPOST /api/ai/chat [32m200[0m 1153.322 ms - 899[0m
+2026-02-28 00:39:43 [http]: [0mPOST /api/ai/chat [32m200[0m 18470.155 ms - 10162[0m
