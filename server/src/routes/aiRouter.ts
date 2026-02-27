@@ -78,7 +78,7 @@ aiRouter.post("/chat", async (req: AuthRequest, res: Response) => {
                 );
             }
 
-            res.json({ response: JSON.stringify(blueprintData) });
+            res.json({ response: JSON.stringify(blueprintData), thread_id: id });
         } else {
             // Discovery Phase
             const insight = await getDiscoveryInsight(message);

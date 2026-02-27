@@ -90,7 +90,7 @@ export default function HistoryPage() {
                             return (
                                 <div
                                     key={analysis.id}
-                                    onClick={() => router.push(`/dashboard/${analysis.thread_id}`)}
+                                    onClick={() => router.push(`/history/${analysis.thread_id}`)}
                                     className="group relative bg-white border border-gray-200 rounded-3xl p-6 cursor-pointer hover:border-blue-400 hover:shadow-xl transition-all duration-300"
                                 >
                                     <div className="flex items-center justify-between mb-4">

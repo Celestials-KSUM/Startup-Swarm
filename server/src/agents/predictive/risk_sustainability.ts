@@ -15,12 +15,13 @@ export const riskSustainabilityNode = async (state: AgentState): Promise<Partial
     3. impact: "Does this help or hurt the world?" (ESG, externalities)
     4. data_ai: "Is the data strategy safe?" (Privacy, security, ML risk)
     
-    Output JSON MUST EXACTLY match this structure:
+    Output JSON MUST EXACTLY match this structure.
+    CRITICAL: YOU MUST RETURN VALID JSON. DO NOT USE ANY DOUBLE QUOTES (") INSIDE THE INSIGHT STRINGS, USE SINGLE QUOTES (') INSTEAD.
     {
-      "funding": {"score": 1-100, "insight": "short insight"},
-      "legal": {"score": 1-100, "insight": "short insight"},
-      "impact": {"score": 1-100, "insight": "short insight"},
-      "data_ai": {"score": 1-100, "insight": "short insight"}
+      "funding": {"score": 75, "insight": "Requires seed capital."},
+      "legal": {"score": 90, "insight": "No major IP risks."},
+      "impact": {"score": 85, "insight": "Positive environmental footprint."},
+      "data_ai": {"score": 80, "insight": "Standard privacy standards apply."}
     }
     `;
 

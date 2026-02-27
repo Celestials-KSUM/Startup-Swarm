@@ -16,13 +16,14 @@ export const marketStrategyNode = async (state: AgentState): Promise<Partial<Age
     4. gtm: "Go-to-Market Strategy" (Acquisition channels, launch plan)
     5. economics: "Unit Economics" (LTV/CAC, profitability)
     
-    Output JSON MUST EXACTLY match this structure:
+    Output JSON MUST EXACTLY match this structure.
+    CRITICAL: YOU MUST RETURN VALID JSON. DO NOT USE ANY DOUBLE QUOTES (") INSIDE THE INSIGHT STRINGS, USE SINGLE QUOTES (') INSTEAD.
     {
-      "market": {"score": 1-100, "insight": "short insight"},
-      "competition": {"score": 1-100, "insight": "short insight"},
-      "pmf": {"score": 1-100, "insight": "short insight"},
-      "gtm": {"score": 1-100, "insight": "short insight"},
-      "economics": {"score": 1-100, "insight": "short insight"}
+      "market": {"score": 85, "insight": "High growth market with room for entry."},
+      "competition": {"score": 75, "insight": "Existing players move slow."},
+      "pmf": {"score": 80, "insight": "Clear signal of product-market fit."},
+      "gtm": {"score": 90, "insight": "Inbound acquisition via community works best."},
+      "economics": {"score": 85, "insight": "Good LTV to CAC ratio."}
     }
     `;
 

@@ -15,12 +15,13 @@ export const techOpsNode = async (state: AgentState): Promise<Partial<AgentState
     3. scalability: "If it explodes, does it crash?" (Capacity planning, server load)
     4. supply_chain: "Are operations stable?" (Vendors, logistics)
     
-    Output JSON MUST EXACTLY match this structure:
+    Output JSON MUST EXACTLY match this structure.
+    CRITICAL: YOU MUST RETURN VALID JSON. DO NOT USE ANY DOUBLE QUOTES (") INSIDE THE INSIGHT STRINGS, USE SINGLE QUOTES (') INSTEAD.
     {
-      "execution": {"score": 1-100, "insight": "short insight"},
-      "tech": {"score": 1-100, "insight": "short insight"},
-      "scalability": {"score": 1-100, "insight": "short insight"},
-      "supply_chain": {"score": 1-100, "insight": "short insight"}
+      "execution": {"score": 85, "insight": "Clear technical path."},
+      "tech": {"score": 90, "insight": "Standard open-source stack is sufficient."},
+      "scalability": {"score": 75, "insight": "Needs robust cloud architecture."},
+      "supply_chain": {"score": 95, "insight": "Purely digital delivery minimizes risks."}
     }
     `;
 
