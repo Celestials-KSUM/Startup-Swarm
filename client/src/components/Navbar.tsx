@@ -52,14 +52,22 @@ export default function Navbar() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4 text-sm font-medium">
-                        <button className="relative group overflow-hidden px-8 py-3 bg-[#111827] text-white rounded-full font-bold transition-all hover:pr-10 active:scale-95 shadow-xl shadow-gray-900/10">
-                            <span className="relative z-10 uppercase text-[10px] tracking-[0.15em]">Get Started</span>
-                            <div className="absolute top-1/2 -translate-y-1/2 right-4 opacity-0 group-hover:opacity-100 transition-all">
-                                <ArrowRight className="w-4 h-4" />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </button>
+                    <div className="flex items-center gap-3 text-sm font-medium">
+                        <Link
+                            href="/login"
+                            className="hidden sm:block px-6 py-2.5 rounded-full hover:bg-gray-900/5 text-gray-600 hover:text-[#111827] transition-all font-semibold"
+                        >
+                            Log in
+                        </Link>
+                        <Link href="/register">
+                            <button className="relative group overflow-hidden px-8 py-3 bg-[#111827] text-white rounded-full font-bold transition-all hover:pr-10 active:scale-95 shadow-xl shadow-gray-900/10">
+                                <span className="relative z-10 uppercase text-[10px] tracking-[0.15em]">Get Started</span>
+                                <div className="absolute top-1/2 -translate-y-1/2 right-4 opacity-0 group-hover:opacity-100 transition-all">
+                                    <ArrowRight className="w-4 h-4" />
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            </button>
+                        </Link>
                         <button className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                             <Menu className="w-6 h-6" />
                         </button>
