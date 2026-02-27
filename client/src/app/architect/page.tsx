@@ -90,6 +90,7 @@ export default function ArchitectPage() {
     const [currentStep, setCurrentStep] = useState(1);
     const [answers, setAnswers] = useState<Record<number, { text: string; option: string }>>({});
     const [isLoading, setIsLoading] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [blueprint, setBlueprint] = useState<any>(null);
     const [threadId] = useState(uuidv4());
 
@@ -155,7 +156,7 @@ export default function ArchitectPage() {
 
     // --- Sub-components ---
 
-    const ScoreCard = ({ title, score, insight, icon: Icon, color }: any) => (
+    const ScoreCard = ({ title, score, insight, icon: Icon, color }: { title: string, score: number, insight: string, icon: React.ElementType, color: string }) => (
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
             <div className="flex items-center justify-between">
                 <div className={`p-3 rounded-xl ${color} bg-opacity-10 text-opacity-100`}>
@@ -192,7 +193,7 @@ export default function ArchitectPage() {
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Startup Architect v2.0</span>
                     </div>
                     <h1 className="fade-in text-5xl lg:text-7xl font-black text-[#111827] tracking-tight mb-8 leading-[1.1]">
-                        What's the <span className="text-blue-600 block italic">Big Vision?</span>
+                        What&apos;s the <span className="text-blue-600 block italic">Big Vision?</span>
                     </h1>
                     <p className="fade-in text-xl text-gray-500 font-medium mb-12 max-w-2xl mx-auto">
                         Pitch your raw concept. Our specialized agent swarm will analyze it before we move to structural engineering.
@@ -233,7 +234,7 @@ export default function ArchitectPage() {
                                 <Activity className="w-6 h-6" />
                             </div>
                             <div>
-                                <h3 className="text-xs font-black text-blue-600 uppercase tracking-widest">Architect's First Impression</h3>
+                                <h3 className="text-xs font-black text-blue-600 uppercase tracking-widest">Architect&apos;s First Impression</h3>
                                 <p className="text-sm font-bold text-gray-400">Contextual Insight Detected</p>
                             </div>
                         </div>
@@ -247,7 +248,7 @@ export default function ArchitectPage() {
                                 <Lightbulb className="w-6 h-6 text-amber-500 shrink-0" />
                                 <div>
                                     <h4 className="font-bold text-gray-900 mb-1">Structural Prep</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed font-medium">We've identified key market hurdles. Next, we categorize your defensibility and traction.</p>
+                                    <p className="text-xs text-gray-500 leading-relaxed font-medium">We&apos;ve identified key market hurdles. Next, we categorize your defensibility and traction.</p>
                                 </div>
                             </div>
                             <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex gap-4 items-start">
@@ -478,7 +479,7 @@ export default function ArchitectPage() {
                                             <div>
                                                 <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Initial CRM Pipeline</h4>
                                                 <div className="space-y-3">
-                                                    {blueprint.execution.outreach.crmPipeline?.map((item: any, idx: number) => (
+                                                    {blueprint.execution.outreach.crmPipeline?.map((item: { partnerCategory: string, status: string, nextAction: string }, idx: number) => (
                                                         <div key={idx} className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm">
                                                             <div className="flex justify-between items-center mb-2">
                                                                 <span className="font-bold text-gray-800">{item.partnerCategory}</span>
@@ -530,7 +531,7 @@ export default function ArchitectPage() {
                                             <div>
                                                 <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">CRM Fundraising Pipeline</h4>
                                                 <div className="space-y-3">
-                                                    {blueprint.execution.investorOutreach.crmPipeline?.map((item: any, idx: number) => (
+                                                    {blueprint.execution.investorOutreach.crmPipeline?.map((item: { investorType: string, status: string, nextAction: string }, idx: number) => (
                                                         <div key={idx} className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:border-indigo-200 transition-colors">
                                                             <div className="flex justify-between items-center mb-2">
                                                                 <span className="font-bold text-gray-800">{item.investorType}</span>
@@ -550,7 +551,7 @@ export default function ArchitectPage() {
                                 <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-blue-400 mb-6">Mission Context</h3>
                                 <h2 className="text-3xl font-bold mb-4">{blueprint.businessOverview?.name}</h2>
                                 <p className="text-blue-100/80 text-lg leading-relaxed mb-8 font-medium">{blueprint.businessOverview?.description}</p>
-                                <div className="inline-block px-6 py-3 bg-white/10 backdrop-blur-md rounded-xl text-sm italic">"{blueprint.businessOverview?.valueProposition}"</div>
+                                <div className="inline-block px-6 py-3 bg-white/10 backdrop-blur-md rounded-xl text-sm italic">&quot;{blueprint.businessOverview?.valueProposition}&quot;</div>
                             </div>
                             <div className="bg-gray-50 p-10 rounded-[2.5rem] border border-gray-100">
                                 <h3 className="text-xl font-black mb-8 flex items-center gap-3"><Construction className="text-blue-600" /> Strategic Roadmap</h3>

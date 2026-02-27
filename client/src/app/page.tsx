@@ -161,7 +161,7 @@ export default function Home() {
                     </div>
                     <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl rounded-tl-none">
                       <p className="text-xs font-bold text-gray-900 mb-1">{msg.user}</p>
-                      <p className="text-sm text-gray-600 italic">"{msg.text}"</p>
+                      <p className="text-sm text-gray-600 italic">&quot;{msg.text}&quot;</p>
                     </div>
                   </div>
                 ))}
@@ -173,7 +173,7 @@ export default function Home() {
               Where AI Agents Disagree, <span className="text-blue-600 italic">Innovation Begins.</span>
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed font-medium">
-              Startup Swarm doesn't just average opinions. It creates a synthetic debate room where specialized agents argue over strategy until the Mentor Orchestrator finds the winning pivot.
+              Startup Swarm doesn&apos;t just average opinions. It creates a synthetic debate room where specialized agents argue over strategy until the Mentor Orchestrator finds the winning pivot.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-gray-900 font-bold">
