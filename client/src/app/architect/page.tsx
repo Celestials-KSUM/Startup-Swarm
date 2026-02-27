@@ -26,10 +26,10 @@ import {
     Construction
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import Navbar from "@/components/Navbar";
 
 import { INITIAL, type FormData } from './types';
 import { calcStrength, strengthMeta } from './utils';
-import ProgressBar from './components/ProgressBar';
 import StrengthWidget from './components/StrengthWidget';
 import FormFooter from './components/FormFooter';
 
@@ -137,8 +137,8 @@ export default function ArchitectPage() {
     // View handling shifted to dynamic route inside /history/[id]
 
     return (
-        <div className="min-h-screen bg-[radial-gradient(circle_at_50%_20%,#F8FAFC_0%,#E6ECF5_60%,#DDE5F0_100%)] font-sans">
-            <ProgressBar active={active} onStepClick={scrollToSection} />
+        <div className="min-h-screen bg-[radial-gradient(circle_at_50%_20%,#F8FAFC_0%,#E6ECF5_60%,#DDE5F0_100%)] font-sans pt-24">
+            <Navbar />
 
             <header className="max-w-[780px] mx-auto px-6 pt-12 pb-8 animate-in fade-in slide-in-from-bottom duration-700">
                 <h1 className="font-bold text-[clamp(1.75rem,4vw,2.75rem)] text-[#0B1220] mb-3 leading-tight tracking-tight">

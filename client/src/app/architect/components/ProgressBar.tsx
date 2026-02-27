@@ -17,8 +17,8 @@ export default function ProgressBar({ active, onStepClick }: ProgressBarProps) {
     const pct = Math.round(((active - 1) / 5) * 100);
 
     return (
-        <nav className="sticky top-0 z-40 bg-[rgba(248,250,252,0.88)] backdrop-blur-xl
-      border-b border-slate-200/60 shadow-[0_4px_24px_rgba(11,18,32,0.06)]"
+        <nav className="sticky top-[88px] z-40 bg-[rgba(248,250,252,0.88)] backdrop-blur-xl
+      border-b border-t border-slate-200/60 shadow-[0_4px_24px_rgba(11,18,32,0.06)]"
             aria-label="Form progress">
             <div className="max-w-[780px] mx-auto px-6 py-3.5 flex items-center justify-between gap-4">
 
@@ -42,8 +42,8 @@ export default function ProgressBar({ active, onStepClick }: ProgressBarProps) {
                                 )}
                                 <button type="button" onClick={() => onStepClick(n)} title={`Section ${n}`}
                                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border-0 cursor-pointer transition-all duration-200 ${done ? 'bg-green-500 text-white'
-                                            : isActive ? 'bg-blue-600 text-white shadow-[0_0_0_4px_rgba(37,99,235,0.15)]'
-                                                : 'bg-slate-200 text-slate-400 hover:bg-slate-300'
+                                        : isActive ? 'bg-blue-600 text-white shadow-[0_0_0_4px_rgba(37,99,235,0.15)]'
+                                            : 'bg-slate-200 text-slate-400 hover:bg-slate-300'
                                         }`}>
                                     {done ? <Check className="w-4 h-4" /> : n}
                                 </button>
