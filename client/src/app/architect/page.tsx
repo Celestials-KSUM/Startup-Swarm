@@ -1,162 +1,98 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import gsap from "gsap";
 import {
-    ChevronRight,
-    ChevronLeft,
-    CheckCircle2,
     Loader2,
-    Building2,
-    Target,
-    ShieldAlert,
-    Users,
-    Activity,
-    Zap,
-    ScrollText,
-    TrendingUp,
+    BarChart3,
     ShieldCheck,
     AlertCircle,
-    BarChart3,
-    Construction,
-    Sparkles,
-    Lightbulb,
-    ArrowRight,
+    Zap,
+    Target,
+    TrendingUp,
     Scale,
+    Users,
     Coins,
     Server,
     Globe,
     Truck,
     Cpu,
+    Building2,
     Handshake,
-    Briefcase
+    Briefcase,
+    Construction
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
-interface Question {
-    id: number;
-    title: string;
-    description: string;
-    placeholder: string;
-    options: string[];
-}
+import { INITIAL, type FormData } from './types';
+import { calcStrength, strengthMeta } from './utils';
+import ProgressBar from './components/ProgressBar';
+import StrengthWidget from './components/StrengthWidget';
+import FormFooter from './components/FormFooter';
 
-const QUESTIONS: Question[] = [
-    {
-        id: 1,
-        title: "The Core Blueprint",
-        description: "What exactly are you building, and what is your unique solution?",
-        placeholder: "e.g., We are building an AI tool for lawyers that...",
-        options: ["SaaS / Software", "Direct-to-Consumer", "Marketplace", "Service-Based"]
-    },
-    {
-        id: 2,
-        title: "Market Domain",
-        description: "Who exactly is your primary target customer?",
-        placeholder: "Describe your ideal user persona...",
-        options: ["Enterprise / B2B", "Mid-Market / SMBs", "Individual Consumers", "Government / Niche"]
-    },
-    {
-        id: 3,
-        title: "Defensibility Moat",
-        description: "How will you prevent others from copying you?",
-        placeholder: "IP, network effects, or data advantages...",
-        options: ["Proprietary Technology", "Network Effects", "High Switching Costs", "Brand & Speed"]
-    },
-    {
-        id: 4,
-        title: "Builder Profile",
-        description: "What is your team's unfair advantage?",
-        placeholder: "Skills of the founding team...",
-        options: ["Technical Experts", "Growth & Sales Hacks", "Deep Industry Insider", "Operations Masters"]
-    },
-    {
-        id: 5,
-        title: "Traction Pulse",
-        description: "What is your current level of validation?",
-        placeholder: "Be honest - it helps the AI be realistic...",
-        options: ["Conceptual Idea", "Customer Interviews", "Working MVP", "Early Paying Users"]
-    }
-];
-
-type AppState = "pitch" | "discovery" | "wizard" | "blueprint";
+import IdentitySection from './sections/IdentitySection';
+import ProblemSection from './sections/ProblemSection';
+import MarketSection from './sections/MarketSection';
+import CategorySection from './sections/CategorySection';
+import TeamSection from './sections/TeamSection';
+import ResourcesSection from './sections/ResourcesSection';
 
 export default function ArchitectPage() {
-    const [appState, setAppState] = useState<AppState>("pitch");
-    const [rawIdea, setRawIdea] = useState("");
-    const [discoveryInsight, setDiscoveryInsight] = useState("");
-    const [currentStep, setCurrentStep] = useState(1);
-    const [answers, setAnswers] = useState<Record<number, { text: string; option: string }>>({});
-    const [isLoading, setIsLoading] = useState(false);
+    const [form, setForm] = useState<FormData>(INITIAL);
+    const [active, setActive] = useState(1);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [submitting, setSubmitting] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [blueprint, setBlueprint] = useState<any>(null);
-    const [threadId] = useState(uuidv4());
+    const [view, setView] = useState<"form" | "blueprint">("form");
+    const [threadId, setThreadId] = useState("");
 
     useEffect(() => {
-        gsap.from(".fade-in", {
-            opacity: 0,
-            y: 20,
-            duration: 0.6,
-            stagger: 0.2,
-            ease: "back.out(1.7)"
+        setThreadId(uuidv4());
+    }, []);
+
+    const set = useCallback((key: keyof FormData, val: any) => {
+        setForm(prev => ({ ...prev, [key]: val }));
+        setErrors(prev => {
+            const n = { ...prev };
+            delete n[key];
+            return n;
         });
-    }, [appState]);
+    }, []);
 
-    const handleInitialPitch = async () => {
-        if (!rawIdea.trim()) return;
-        setIsLoading(true);
-        try {
-            const response = await axios.post("http://localhost:5000/api/ai/chat", {
-                message: `I have a startup idea: "${rawIdea}". Give me a strategic first impression and some specialized architect tips for this domain.`,
-                threadId: threadId
-            });
-            setDiscoveryInsight(response.data.response);
-            setAppState("discovery");
-        } catch (error) {
-            console.error("Discovery Error:", error);
-        } finally {
-            setIsLoading(false);
-        }
+    const scrollToSection = (n: number) => {
+        setActive(n);
+        document.getElementById(`section-${n}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    const handleNextWizard = () => {
-        if (!answers[currentStep]?.text && !answers[currentStep]?.option) return;
-        if (currentStep < QUESTIONS.length) {
-            setCurrentStep(prev => prev + 1);
-        } else {
-            generateBlueprint();
-        }
-    };
+    const handleSubmit = async () => {
+        // Validation removed as per user request
+        setErrors({});
 
-    const generateBlueprint = async () => {
-        setIsLoading(true);
+        setSubmitting(true);
         try {
-            const consolidatedData = Object.entries(answers).map(([id, data]) => {
-                const q = QUESTIONS.find(q => q.id === parseInt(id));
-                return `${q?.title}: ${data.option} | Details: ${data.text}`;
-            }).join("\n");
-
             const response = await axios.post("http://localhost:5000/api/ai/chat", {
-                message: `User is ready for the blueprint. Context idea: ${rawIdea}. Here is the structured data:\n${consolidatedData}`,
+                structuredData: form,
                 threadId: threadId
             });
 
             const content = response.data.response;
             setBlueprint(JSON.parse(content));
-            setAppState("blueprint");
+            setView("blueprint");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (error) {
             console.error("Blueprint error:", error);
-            alert("Strategic connection lost.");
+            alert("Strategic connection lost. Please try again.");
         } finally {
-            setIsLoading(false);
+            setSubmitting(false);
         }
     };
 
-    // --- Sub-components ---
+    const pct = calcStrength(form);
+    const meta = strengthMeta(pct);
 
-    const ScoreCard = ({ title, score, insight, icon: Icon, color }: { title: string, score: number, insight: string, icon: React.ElementType, color: string }) => (
+    const ScoreCard = ({ title, score, insight, icon: Icon, color }: { title: string, score: number, insight: string, icon: any, color: string }) => (
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col gap-4">
             <div className="flex items-center justify-between">
                 <div className={`p-3 rounded-xl ${color} bg-opacity-10 text-opacity-100`}>
@@ -177,406 +113,120 @@ export default function ArchitectPage() {
         </div>
     );
 
-    // --- Render Logic ---
-
-    if (appState === "pitch") {
+    if (view === "blueprint") {
         return (
-            <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center p-6 relative overflow-hidden">
-                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
-                    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-100 rounded-full blur-[120px]" />
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-100 rounded-full blur-[100px]" />
-                </div>
-
-                <div className="w-full max-w-3xl relative z-10 text-center">
-                    <div className="fade-in inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-100 mb-8">
-                        <Sparkles className="w-4 h-4 text-blue-600" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Startup Architect v2.0</span>
-                    </div>
-                    <h1 className="fade-in text-5xl lg:text-7xl font-black text-[#111827] tracking-tight mb-8 leading-[1.1]">
-                        What&apos;s the <span className="text-blue-600 block italic">Big Vision?</span>
-                    </h1>
-                    <p className="fade-in text-xl text-gray-500 font-medium mb-12 max-w-2xl mx-auto">
-                        Pitch your raw concept. Our specialized agent swarm will analyze it before we move to structural engineering.
-                    </p>
-
-                    <div className="fade-in relative group max-w-2xl mx-auto">
-                        <textarea
-                            value={rawIdea}
-                            onChange={(e) => setRawIdea(e.target.value)}
-                            placeholder="I want to start a subscription box for sustainable pet owners..."
-                            className="w-full p-8 pr-32 bg-white border-2 border-gray-100 rounded-[2.5rem] shadow-xl focus:border-blue-200 outline-none min-h-[140px] text-lg font-medium text-gray-800 placeholder:text-gray-300 transition-all"
-                        />
-                        <button
-                            onClick={handleInitialPitch}
-                            disabled={!rawIdea.trim() || isLoading}
-                            className="absolute right-4 bottom-4 px-8 py-5 bg-[#111827] text-white rounded-[1.8rem] font-bold shadow-lg hover:bg-black transition-all flex items-center gap-3 disabled:opacity-50"
-                        >
-                            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Pitch to Swarm"}
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appState === "discovery") {
-        return (
-            <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center p-6 lg:p-12 relative">
-                <div className="w-full max-w-4xl bg-white p-12 rounded-[3.5rem] shadow-2xl border border-gray-100 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-12 opacity-5">
-                        <Building2 className="w-48 h-48" />
-                    </div>
-
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-3 mb-8">
-                            <div className="p-3 bg-blue-600 rounded-2xl text-white">
-                                <Activity className="w-6 h-6" />
-                            </div>
-                            <div>
-                                <h3 className="text-xs font-black text-blue-600 uppercase tracking-widest">Architect&apos;s First Impression</h3>
-                                <p className="text-sm font-bold text-gray-400">Contextual Insight Detected</p>
-                            </div>
-                        </div>
-
-                        <div className="prose prose-lg max-w-none text-gray-700 font-medium leading-relaxed mb-12 prose-p:mb-6">
-                            <ReactMarkdown>{discoveryInsight}</ReactMarkdown>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-6 mb-12">
-                            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex gap-4 items-start">
-                                <Lightbulb className="w-6 h-6 text-amber-500 shrink-0" />
-                                <div>
-                                    <h4 className="font-bold text-gray-900 mb-1">Structural Prep</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed font-medium">We&apos;ve identified key market hurdles. Next, we categorize your defensibility and traction.</p>
-                                </div>
-                            </div>
-                            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex gap-4 items-start">
-                                <Construction className="w-6 h-6 text-blue-600 shrink-0" />
-                                <div>
-                                    <h4 className="font-bold text-gray-900 mb-1">The 5-Step Deep-Dive</h4>
-                                    <p className="text-xs text-gray-500 leading-relaxed font-medium">Proceeding to step-by-step structural engineering to build the revenue roadmap.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={() => setAppState("wizard")}
-                            className="w-full py-6 bg-blue-600 text-white rounded-3xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3 group text-lg"
-                        >
-                            Proceed to Structural Engineering
-                            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appState === "wizard") {
-        const currentQ = QUESTIONS[currentStep - 1];
-        return (
-            <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center p-6 lg:p-12">
-                <div className="w-full max-w-6xl grid lg:grid-cols-5 gap-12">
-                    <div className="lg:col-span-2 hidden lg:block">
-                        <div className="bg-white p-8 rounded-[2rem] border border-gray-200 shadow-xl relative h-full">
-                            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-10">Blueprint Development</h3>
-                            <div className="space-y-8 relative">
-                                <div className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-gray-100" />
-                                {[1, 2, 3, 4, 5].map((s) => (
-                                    <div key={s} className="flex items-center gap-6 relative">
-                                        <div className={`w-10 h-10 rounded-xl border-2 flex items-center justify-center transition-all duration-500 ${currentStep > s ? "bg-blue-600 border-blue-600 text-white" :
-                                            currentStep === s ? "bg-white border-blue-600 text-blue-600 shadow-lg shadow-blue-100" :
-                                                "bg-white border-gray-200 text-gray-300"
-                                            }`}>
-                                            {currentStep > s ? <CheckCircle2 className="w-5 h-5" /> : <span className="text-sm font-black">{s}</span>}
-                                        </div>
-                                        <p className={`text-sm font-bold ${currentStep === s ? "text-gray-900" : "text-gray-400"}`}>
-                                            {QUESTIONS[s - 1].title}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="mt-12 pt-8 border-t border-gray-100">
-                                <div className="flex justify-between items-end mb-2">
-                                    <span className="text-[10px] font-black uppercase text-gray-400">Total Completion</span>
-                                    <span className="text-xs font-black text-blue-600">{Math.round((currentStep / QUESTIONS.length) * 100)}%</span>
-                                </div>
-                                <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                    <div className="h-full bg-blue-600 transition-all duration-700" style={{ width: `${(currentStep / QUESTIONS.length) * 100}%` }} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="lg:col-span-3">
-                        <div className="bg-white p-10 rounded-[2.5rem] border border-gray-200 shadow-2xl relative min-h-[500px] flex flex-col">
-                            {isLoading ? (
-                                <div className="flex-1 flex flex-col items-center justify-center gap-6">
-                                    <div className="relative">
-                                        <div className="w-24 h-24 border-[6px] border-blue-100 rounded-full" />
-                                        <div className="w-24 h-24 border-[6px] border-blue-600 rounded-full border-t-transparent animate-spin absolute top-0" />
-                                        <Zap className="w-8 h-8 text-blue-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />
-                                    </div>
-                                    <div className="text-center">
-                                        <h2 className="text-2xl font-black text-gray-900 mb-2">Simulating Board Meeting</h2>
-                                        <p className="text-gray-500 font-medium">Specialized agents are critiquing your strategy...</p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <>
-                                    <div className="flex-1">
-                                        <h2 className="text-3xl font-black text-[#111827] mb-3">{currentQ.title}</h2>
-                                        <p className="text-gray-500 font-medium text-lg mb-10">{currentQ.description}</p>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                                            {currentQ.options.map((opt) => (
-                                                <button
-                                                    key={opt}
-                                                    onClick={() => setAnswers(prev => ({ ...prev, [currentStep]: { ...prev[currentStep], option: opt } }))}
-                                                    className={`p-5 rounded-2xl border-2 text-left font-bold transition-all ${answers[currentStep]?.option === opt ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-50 bg-gray-50 hover:border-gray-200 text-gray-600"
-                                                        }`}
-                                                >
-                                                    {opt}
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <textarea
-                                            value={answers[currentStep]?.text || ""}
-                                            onChange={(e) => setAnswers(prev => ({ ...prev, [currentStep]: { ...prev[currentStep], text: e.target.value } }))}
-                                            placeholder={currentQ.placeholder}
-                                            className="w-full bg-gray-50 border-2 border-transparent focus:border-blue-50 focus:bg-white rounded-2xl p-6 min-h-[140px] outline-none transition-all text-gray-800 font-medium"
-                                        />
-                                    </div>
-                                    <div className="flex items-center justify-between mt-12 pt-8 border-t border-gray-100">
-                                        <button onClick={() => setCurrentStep(prev => prev - 1)} disabled={currentStep === 1} className="p-4 bg-gray-100 text-gray-400 rounded-2xl hover:bg-gray-200 transition-all disabled:opacity-0"><ChevronLeft /></button>
-                                        <button onClick={handleNextWizard} disabled={!answers[currentStep]?.option && !answers[currentStep]?.text} className="px-8 py-5 bg-[#111827] text-white rounded-[1.5rem] font-bold shadow-xl hover:bg-black transition-all flex items-center gap-3 disabled:opacity-50">
-                                            <span className="uppercase tracking-widest text-xs">{currentStep === QUESTIONS.length ? "Finalize Strategy" : "Next Module"}</span>
-                                            <ChevronRight />
-                                        </button>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (appState === "blueprint") {
-        return (
-            <div className="min-h-screen bg-white p-8 blueprint-reveal">
+            <div className="min-h-screen bg-white p-8 animate-in fade-in duration-700">
                 <div className="max-w-7xl mx-auto">
                     <header className="flex items-center justify-between mb-12">
                         <div>
-                            <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.3em]">Seed Strategy Blueprint</span>
-                            <h1 className="text-4xl font-black text-[#111827] mt-2">Executive Roadmap</h1>
+                            <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.3em]">Execution Strategy Blueprint</span>
+                            <h1 className="text-4xl font-black text-[#111827] mt-2">The Architecture</h1>
                         </div>
-                        <button onClick={() => window.location.reload()} className="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-full font-bold text-xs uppercase tracking-widest">New Build</button>
+                        <button onClick={() => window.location.reload()} className="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-full font-bold text-xs uppercase tracking-widest transition-colors">Start New Analysis</button>
                     </header>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                        <ScoreCard title="Market Viability" score={blueprint.agentScoring?.marketResearch?.score} insight={blueprint.agentScoring?.marketResearch?.insight} icon={BarChart3} color="bg-emerald-500" />
-                        <ScoreCard title="Defensibility" score={blueprint.agentScoring?.competitionIntel?.score} insight={blueprint.agentScoring?.competitionIntel?.insight} icon={ShieldCheck} color="bg-blue-500" />
-                        <ScoreCard title="Execution Risk" score={blueprint.agentScoring?.executionRisk?.score} insight={blueprint.agentScoring?.executionRisk?.insight} icon={AlertCircle} color="bg-rose-500" />
-                        <ScoreCard title="Tech Feasibility" score={blueprint.agentScoring?.techFeasibility?.score} insight={blueprint.agentScoring?.techFeasibility?.insight} icon={Zap} color="bg-amber-500" />
-                        <ScoreCard title="PMF Probability" score={blueprint.agentScoring?.pmfProbability?.score} insight={blueprint.agentScoring?.pmfProbability?.insight} icon={Target} color="bg-purple-500" />
-                        <ScoreCard title="Funding Readiness" score={blueprint.agentScoring?.fundingReadiness?.score} insight={blueprint.agentScoring?.fundingReadiness?.insight} icon={TrendingUp} color="bg-cyan-500" />
-                        <ScoreCard title="Legal & Compliance" score={blueprint.agentScoring?.legalCompliance?.score} insight={blueprint.agentScoring?.legalCompliance?.insight} icon={Scale} color="bg-indigo-500" />
-                        <ScoreCard title="GTM Strategy" score={blueprint.agentScoring?.gtmStrategy?.score} insight={blueprint.agentScoring?.gtmStrategy?.insight} icon={Users} color="bg-fuchsia-500" />
-                        <ScoreCard title="Unit Economics" score={blueprint.agentScoring?.unitEconomics?.score} insight={blueprint.agentScoring?.unitEconomics?.insight} icon={Coins} color="bg-lime-500" />
-                        <ScoreCard title="Scalability & Infra" score={blueprint.agentScoring?.scalabilityInfra?.score} insight={blueprint.agentScoring?.scalabilityInfra?.insight} icon={Server} color="bg-orange-500" />
-                        <ScoreCard title="ESG & Impact" score={blueprint.agentScoring?.impactSustainability?.score} insight={blueprint.agentScoring?.impactSustainability?.insight} icon={Globe} color="bg-teal-500" />
-                        <ScoreCard title="Supply Chain & Ops" score={blueprint.agentScoring?.supplyChainOps?.score} insight={blueprint.agentScoring?.supplyChainOps?.insight} icon={Truck} color="bg-yellow-500" />
-                        <ScoreCard title="Data & AI Risk" score={blueprint.agentScoring?.dataAiRisk?.score} insight={blueprint.agentScoring?.dataAiRisk?.insight} icon={Cpu} color="bg-pink-500" />
+                        <ScoreCard title="Market Viability" score={blueprint.agentScoring?.marketResearch?.score || 0} insight={blueprint.agentScoring?.marketResearch?.insight || ""} icon={BarChart3} color="bg-emerald-500" />
+                        <ScoreCard title="Defensibility" score={blueprint.agentScoring?.competitionIntel?.score || 0} insight={blueprint.agentScoring?.competitionIntel?.insight || ""} icon={ShieldCheck} color="bg-blue-500" />
+                        <ScoreCard title="Execution Risk" score={blueprint.agentScoring?.executionRisk?.score || 0} insight={blueprint.agentScoring?.executionRisk?.insight || ""} icon={AlertCircle} color="bg-rose-500" />
+                        <ScoreCard title="Tech Feasibility" score={blueprint.agentScoring?.techFeasibility?.score || 0} insight={blueprint.agentScoring?.techFeasibility?.insight || ""} icon={Zap} color="bg-amber-500" />
                     </div>
 
                     <div className="grid lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2 space-y-8">
-
                             {/* Execution Agent: Company Registration */}
                             {blueprint.execution?.registration && (
-                                <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all">
+                                <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all">
                                     <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
                                         <Building2 className="w-5 h-5 text-blue-500" />
-                                        Company Registration Agent
+                                        Registration Roadmap
                                     </h3>
                                     <div className="grid md:grid-cols-2 gap-8">
                                         <div className="space-y-6">
                                             <div>
                                                 <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Required Documents</h4>
-                                                <ul className="space-y-2">
+                                                <ul className="space-y-2 text-sm text-gray-600">
                                                     {blueprint.execution.registration.documentsRequired?.map((doc: string, idx: number) => (
-                                                        <li key={idx} className="flex items-start gap-3">
-                                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
-                                                            <p className="text-gray-600 font-medium leading-tight">{doc}</p>
-                                                        </li>
+                                                        <li key={idx} className="flex items-start gap-2">• {doc}</li>
                                                     ))}
                                                 </ul>
                                             </div>
+                                        </div>
+                                        <div className="space-y-6">
                                             <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Incorporation Checklist</h4>
-                                                <ul className="space-y-2">
+                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Checklist</h4>
+                                                <ul className="space-y-2 text-sm text-gray-600">
                                                     {blueprint.execution.registration.incorporationChecklist?.map((item: string, idx: number) => (
-                                                        <li key={idx} className="flex items-start gap-3">
-                                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 shrink-0" />
-                                                            <p className="text-gray-600 font-medium leading-tight">{item}</p>
-                                                        </li>
+                                                        <li key={idx} className="flex items-start gap-2">✓ {item}</li>
                                                     ))}
                                                 </ul>
                                             </div>
                                         </div>
-
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Government Forms</h4>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {blueprint.execution.registration.governmentFormsNeeded?.map((form: string, idx: number) => (
-                                                        <span key={idx} className="bg-orange-50 text-orange-700 px-3 py-1.5 rounded-lg text-sm font-semibold border border-orange-100">
-                                                            {form}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">CA Appointment Draft</h4>
-                                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                                                    <p className="text-gray-600 text-sm whitespace-pre-wrap">{blueprint.execution.registration.caAppointmentDraft}</p>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             )}
 
-                            {/* Execution Agent: Partnership & Outreach */}
-                            {blueprint.execution?.outreach && (
-                                <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all">
-                                    <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
-                                        <Handshake className="w-5 h-5 text-emerald-500" />
-                                        Partnership & Outreach Agent
-                                    </h3>
-                                    <div className="grid md:grid-cols-2 gap-8">
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Potential Partners Identified</h4>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {blueprint.execution.outreach.potentialPartners?.map((partner: string, idx: number) => (
-                                                        <span key={idx} className="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg text-sm font-semibold border border-emerald-100">
-                                                            {partner}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Automated Outreach Draft</h4>
-                                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                                                    <p className="text-gray-600 text-sm whitespace-pre-wrap">{blueprint.execution.outreach.outreachEmailDraft}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Initial CRM Pipeline</h4>
-                                                <div className="space-y-3">
-                                                    {blueprint.execution.outreach.crmPipeline?.map((item: { partnerCategory: string, status: string, nextAction: string }, idx: number) => (
-                                                        <div key={idx} className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm">
-                                                            <div className="flex justify-between items-center mb-2">
-                                                                <span className="font-bold text-gray-800">{item.partnerCategory}</span>
-                                                                <span className="text-xs font-bold px-2 py-1 bg-gray-100 text-gray-600 rounded-md uppercase tracking-wider">{item.status}</span>
-                                                            </div>
-                                                            <div className="text-xs text-gray-500 font-medium">Action: {item.nextAction}</div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Execution Agent: Investor Outreach */}
-                            {blueprint.execution?.investorOutreach && (
-                                <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all">
-                                    <div className="flex justify-between items-start mb-6">
-                                        <h3 className="text-xl font-black text-gray-900 flex items-center gap-2">
-                                            <Briefcase className="w-5 h-5 text-indigo-500" />
-                                            Investor Outreach Automation
-                                        </h3>
-                                        <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg border border-indigo-100 uppercase tracking-wider">
-                                            Stage: {blueprint.execution.investorOutreach.recommendedStage}
-                                        </span>
-                                    </div>
-                                    <div className="grid md:grid-cols-2 gap-8">
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Target Investor Profiles</h4>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {blueprint.execution.investorOutreach.investorTargets?.map((target: string, idx: number) => (
-                                                        <span key={idx} className="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-semibold border border-gray-200">
-                                                            {target}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">Automated Pitch Draft</h4>
-                                                <div className="bg-gradient-to-br from-indigo-50/50 to-white p-4 rounded-2xl border border-indigo-100/50">
-                                                    <p className="text-gray-600 text-sm whitespace-pre-wrap">{blueprint.execution.investorOutreach.pitchEmailDraft}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h4 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wider">CRM Fundraising Pipeline</h4>
-                                                <div className="space-y-3">
-                                                    {blueprint.execution.investorOutreach.crmPipeline?.map((item: { investorType: string, status: string, nextAction: string }, idx: number) => (
-                                                        <div key={idx} className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:border-indigo-200 transition-colors">
-                                                            <div className="flex justify-between items-center mb-2">
-                                                                <span className="font-bold text-gray-800">{item.investorType}</span>
-                                                                <span className="text-xs font-bold px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md uppercase tracking-wider">{item.status}</span>
-                                                            </div>
-                                                            <div className="text-xs text-gray-500 font-medium">Auto-Action: {item.nextAction}</div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
+                            {/* Strategic Summary */}
                             <div className="bg-[#111827] text-white p-10 rounded-[2.5rem] shadow-2xl">
-                                <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-blue-400 mb-6">Mission Context</h3>
-                                <h2 className="text-3xl font-bold mb-4">{blueprint.businessOverview?.name}</h2>
-                                <p className="text-blue-100/80 text-lg leading-relaxed mb-8 font-medium">{blueprint.businessOverview?.description}</p>
-                                <div className="inline-block px-6 py-3 bg-white/10 backdrop-blur-md rounded-xl text-sm italic">&quot;{blueprint.businessOverview?.valueProposition}&quot;</div>
+                                <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-blue-400 mb-6">Strategic Summary</h3>
+                                <h2 className="text-3xl font-bold mb-4">{blueprint.businessOverview?.name || form.startup_name}</h2>
+                                <p className="text-blue-100/80 text-lg leading-relaxed mb-8 font-medium italic underline decoration-blue-500/30 underline-offset-8">
+                                    {blueprint.businessOverview?.valueProposition || "Building the future of " + form.startup_category}
+                                </p>
+                                <div className="prose prose-invert max-w-none text-gray-300">
+                                    <ReactMarkdown>{blueprint.businessOverview?.description || ""}</ReactMarkdown>
+                                </div>
                             </div>
+
+                            {/* Roadmap */}
                             <div className="bg-gray-50 p-10 rounded-[2.5rem] border border-gray-100">
                                 <h3 className="text-xl font-black mb-8 flex items-center gap-3"><Construction className="text-blue-600" /> Strategic Roadmap</h3>
-                                <div className="space-y-6">
+                                <div className="space-y-4">
                                     {blueprint.strategicRoadmap?.map((step: string, i: number) => (
-                                        <div key={i} className="flex gap-6">
-                                            <div className="w-10 h-10 rounded-full bg-white border-2 border-blue-600 text-blue-600 flex items-center justify-center font-black text-xs shrink-0">{i + 1}</div>
-                                            <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex-1"><p className="text-gray-800 font-bold">{step}</p></div>
+                                        <div key={i} className="flex gap-6 items-start">
+                                            <div className="w-8 h-8 rounded-full bg-white border-2 border-blue-600 text-blue-600 flex items-center justify-center font-black text-xs shrink-0">{i + 1}</div>
+                                            <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex-1">
+                                                <p className="text-gray-800 font-semibold text-sm">{step}</p>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
+
+                        {/* Sidebar: Outreach & Revenue */}
                         <div className="space-y-8">
-                            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-200">
-                                <h3 className="text-lg font-black mb-6 uppercase tracking-wider">Growth & Finance</h3>
-                                <div className="space-y-4">
-                                    {blueprint.revenueModel?.map((item: string, i: number) => (
-                                        <div key={i} className="p-4 bg-emerald-50 rounded-xl border border-emerald-100 text-xs font-bold text-emerald-700">{item}</div>
-                                    ))}
-                                    {blueprint.costStructure?.monthlyExpenses?.map((item: string, i: number) => (
-                                        <div key={i} className="p-4 bg-rose-50 rounded-xl border border-rose-100 text-xs font-bold text-rose-700">{item}</div>
-                                    ))}
+                            {blueprint.execution?.outreach && (
+                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+                                    <h3 className="text-lg font-black mb-6 flex items-center gap-2">
+                                        <Handshake className="w-5 h-5 text-emerald-500" />
+                                        Partnerships
+                                    </h3>
+                                    <div className="space-y-4">
+                                        {blueprint.execution.outreach.potentialPartners?.slice(0, 5).map((partner: string, idx: number) => (
+                                            <div key={idx} className="p-3 bg-emerald-50 rounded-xl border border-emerald-100 text-xs font-bold text-emerald-700">
+                                                {partner}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
+                            {blueprint.revenueModel && (
+                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+                                    <h3 className="text-lg font-black mb-6 items-center flex gap-2">
+                                        <Coins className="w-5 h-5 text-amber-500" />
+                                        Economics
+                                    </h3>
+                                    <div className="space-y-4">
+                                        {blueprint.revenueModel.map((item: string, i: number) => (
+                                            <div key={i} className="p-3 bg-amber-50 rounded-xl border border-amber-100 text-xs font-bold text-amber-700">
+                                                {item}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -584,5 +234,48 @@ export default function ArchitectPage() {
         );
     }
 
-    return null;
+    return (
+        <div className="min-h-screen bg-[radial-gradient(circle_at_50%_20%,#F8FAFC_0%,#E6ECF5_60%,#DDE5F0_100%)] font-sans">
+            <ProgressBar active={active} onStepClick={scrollToSection} />
+
+            <header className="max-w-[780px] mx-auto px-6 pt-12 pb-8 animate-in fade-in slide-in-from-bottom duration-700">
+                <h1 className="font-bold text-[clamp(1.75rem,4vw,2.75rem)] text-[#0B1220] mb-3 leading-tight tracking-tight">
+                    Architect your{' '}
+                    <span className="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">startup</span>
+                </h1>
+                <p className="text-[1.05rem] text-slate-500 max-w-lg leading-relaxed mb-2">
+                    Define your startup's core structure and let our specialized agent swarm engineer your strategic blueprint.
+                </p>
+                <p className="text-xs text-slate-400">Fields marked with * are required</p>
+
+                {/* Mobile strength bar */}
+                <div className="lg:hidden mt-5 bg-white/60 backdrop-blur-md border border-white/75 rounded-xl px-4 py-3">
+                    <p className="text-xs font-medium text-slate-500 mb-1">Architectural Readiness</p>
+                    <p className="font-bold text-2xl mb-1.5" style={{ color: meta.color }}>{pct}%</p>
+                    <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden mb-1.5">
+                        <div className="h-full rounded-full bg-gradient-to-r from-blue-600 to-blue-500 transition-all duration-500"
+                            style={{ width: `${pct}%` }} />
+                    </div>
+                    <p className="text-xs font-medium" style={{ color: meta.color }}>{meta.label}</p>
+                </div>
+            </header>
+
+            <main className="max-w-[780px] mx-auto px-6 pb-32">
+                <div className="bg-white/70 backdrop-blur-xl border border-white/80
+          shadow-[0_8px_40px_rgba(11,18,32,0.09)]
+          rounded-2xl overflow-hidden divide-y divide-slate-200/70
+          animate-in fade-in slide-in-from-bottom duration-700 delay-200">
+                    <IdentitySection data={form} errors={errors} set={set} onFocus={() => setActive(1)} />
+                    <ProblemSection data={form} errors={errors} set={set} onFocus={() => setActive(2)} />
+                    <MarketSection data={form} errors={errors} set={set} onFocus={() => setActive(3)} />
+                    <CategorySection data={form} errors={errors} set={set} onFocus={() => setActive(4)} />
+                    <TeamSection data={form} errors={errors} set={set} onFocus={() => setActive(5)} />
+                    <ResourcesSection data={form} set={set} onFocus={() => setActive(6)} />
+                </div>
+            </main>
+
+            <StrengthWidget pct={pct} label={meta.label} color={meta.color} />
+            <FormFooter submitting={submitting} onSubmit={handleSubmit} />
+        </div>
+    );
 }

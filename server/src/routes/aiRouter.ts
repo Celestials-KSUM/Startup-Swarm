@@ -7,10 +7,10 @@ const aiRouter = Router();
 
 aiRouter.post("/chat", async (req: Request, res: Response) => {
     try {
-        const { message, threadId } = req.body;
+        const { message, threadId, structuredData } = req.body;
 
-        if (!message) {
-            res.status(400).json({ error: "message is required" });
+        if (!message && !structuredData) {
+            res.status(400).json({ error: "message or structuredData is required" });
             return;
         }
 
@@ -21,14 +21,19 @@ aiRouter.post("/chat", async (req: Request, res: Response) => {
             return;
         }
 
-        const isBlueprintRequest = message.toLowerCase().includes("blueprint") &&
-            message.toLowerCase().includes("structured data");
+        const isBlueprintRequest = (message && message.toLowerCase().includes("blueprint")) || structuredData;
 
         if (isBlueprintRequest) {
             // Run the full Agent Swarm
             const startupAgent = await createStartupSwarm();
+
+            // If structuredData is provided, use it to build a rich context
+            const businessIdea = structuredData
+                ? `Structured Startup Data:\n${JSON.stringify(structuredData, null, 2)}`
+                : message;
+
             const inputs = {
-                business_idea: message,
+                business_idea: businessIdea,
                 messages: [],
                 analysis: {},
                 blueprint: {},
@@ -39,24 +44,22 @@ aiRouter.post("/chat", async (req: Request, res: Response) => {
             const blueprintData = result.blueprint || {};
             const executionData = result.execution_results || {};
 
-            // Map execution insights onto blueprint mapping
             blueprintData.execution = executionData;
 
             // Save to MongoDB -> analyses collection
             await db.collection("analyses").insertOne({
                 thread_id: id,
                 type: "blueprint",
+                input_data: structuredData || message,
                 data: blueprintData,
                 created_at: new Date()
             });
 
-            // Frontend expects JSON string inside 'response' field
             res.json({ response: JSON.stringify(blueprintData) });
         } else {
             // Discovery Phase
             const insight = await getDiscoveryInsight(message);
 
-            // Save to MongoDB -> chats collection
             await db.collection("chats").insertOne({
                 thread_id: id,
                 role: "assistant",

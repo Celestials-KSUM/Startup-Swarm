@@ -2,12 +2,13 @@ import dotenv from "dotenv";
 import path from "path";
 
 // Load environment variables from .env file
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+const envPath = path.resolve(__dirname, "../../.env");
+dotenv.config({ path: envPath });
 
 export const config = {
     PORT: Number(process.env.PORT) || 5000,
     MONGO_URI: process.env.MONGO_URI || "",
-    GROQ_API_KEY: process.env.GROQ_API_KEY || "",
+    GROQ_API_KEY: (process.env.GROQ_API_KEY || "").trim(),
     NODE_ENV: process.env.NODE_ENV || "development",
     CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
     JWT_SECRET: process.env.JWT_SECRET || "fallback_secret",
