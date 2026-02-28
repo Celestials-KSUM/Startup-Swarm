@@ -7,10 +7,7 @@ import { techOpsNode } from "./predictive/tech_ops";
 import { riskSustainabilityNode } from "./predictive/risk_sustainability";
 import { blueprintNode } from "./predictive/blueprint";
 
-// Import Execution Agents
-import { companyRegistrationNode } from "./execution/registration";
-import { outreachNode } from "./execution/outreach";
-import { investorOutreachNode } from "./execution/investor_outreach";
+import { operationsNode } from "./execution/operations";
 import { websiteBuilderNode } from "./execution/website_builder";
 
 export const createStartupSwarm = () => {
@@ -23,31 +20,23 @@ export const createStartupSwarm = () => {
         .addNode("blueprint_node", blueprintNode)
 
         // Add Execution Nodes
-        .addNode("registration", companyRegistrationNode)
-        .addNode("outreach", outreachNode)
-        .addNode("investor", investorOutreachNode)
+        .addNode("operations", operationsNode)
         .addNode("website_builder", websiteBuilderNode)
 
-        // Initial Fan-Out to Predictive Groups
+        // Initial Sequential Flow instead of Parallel to avoid Groq Rate Constraints
         .addEdge(START, "market_strategy")
-        .addEdge(START, "tech_ops")
-        .addEdge(START, "risk_sustainability")
+        .addEdge("market_strategy", "tech_ops")
+        .addEdge("tech_ops", "risk_sustainability")
 
-        // Fan-In to Blueprint Node from Groups
-        .addEdge("market_strategy", "blueprint_node")
-        .addEdge("tech_ops", "blueprint_node")
+        // Transition to Blueprint
         .addEdge("risk_sustainability", "blueprint_node")
 
-        // Fan-Out to Execution Nodes
-        .addEdge("blueprint_node", "registration")
-        .addEdge("blueprint_node", "outreach")
-        .addEdge("blueprint_node", "investor")
+        // Fan-Out to Execution Nodes (2 Nodes)
+        .addEdge("blueprint_node", "operations")
         .addEdge("blueprint_node", "website_builder")
 
         // Fan-In to END from Execution Nodes
-        .addEdge("registration", END)
-        .addEdge("outreach", END)
-        .addEdge("investor", END)
+        .addEdge("operations", END)
         .addEdge("website_builder", END);
 
     return builder.compile();

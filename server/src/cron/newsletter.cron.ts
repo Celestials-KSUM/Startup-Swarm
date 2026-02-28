@@ -146,9 +146,9 @@ export const startNewsletterCron = () => {
 
     // Changing the cron to '* * * * *' runs it EVERY MINUTE for immediate testing
     // Change back to '0 8 * * *' when you are done testing to run 1x daily!
-    cron.schedule("* * * * *", async () => {
+    cron.schedule("0 8 * * *", async () => {
         await executeNewsletterAgent();
     });
 
-    console.log("📨 Autonomous Executive Email Agent scheduled (Running every minute for testing right now).");
+    console.log("📨 Autonomous Executive Email Agent scheduled (Running daily at 8:00 AM).");
 };
