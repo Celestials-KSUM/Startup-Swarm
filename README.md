@@ -1,4 +1,4 @@
-# � Startup Swarm - Removing the Fear of Starting a Business
+# 🛸 Startup Swarm - Removing the Fear of Starting a Business
 
 **Startup Swarm** is an end-to-end autonomous entrepreneurship platform. We don't just analyze your business idea — our swarm of specialized AI agents actually builds the foundation of your company for you.
 
@@ -130,12 +130,22 @@ TWOSLIDES_API_KEY=sk-2slides-...
 |---|---|
 | ![Questionnaire](imgs/step1.png) | ![Blueprint](imgs/step2.png) |
 
-*(Note: Replace with actual step-by-step screenshots from the `imgs` folder)*
+---
+
+## 🌌 The Celestials Team
+
+**Startup Swarm** is designed and engineered with ❤️ by **Team Celestials**:
+
+- **Mohammed Shahinsha**
+- **Shamveel P**
+- **Akshay C**
+- **Hina Hanan**
+- **Sangeeth**
 
 ---
 
-## � Support & Community
+## 📞 Support & Community
 
 Startup Swarm is built to remove the barrier to entry for founders everywhere. If you encounter issues or have suggestions, feel free to open a PR or an issue!
 
-Built with ⚡ by the Startup Swarm Engineering Team.
+Built with ⚡ by **Team Celestials**.
