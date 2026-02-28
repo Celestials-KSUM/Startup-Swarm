@@ -68,22 +68,6 @@ export default function Navbar() {
                             <Link href="/pricing" className="px-4 py-1.5 rounded-full hover:bg-gray-900/5 hover:text-gray-900 transition-all">
                                 Pricing
                             </Link>
-                            {[
-                                { name: "Solutions", hasMenu: true },
-                                { name: "Platform", hasMenu: true },
-                                { name: "Resources", hasMenu: true },
-                            ].map((item) => (
-                                <a
-                                    key={item.name}
-                                    href="#"
-                                    className="px-4 py-1.5 rounded-full hover:bg-gray-900/5 hover:text-gray-900 transition-all flex items-center gap-1 group"
-                                >
-                                    {item.name}
-                                    {item.hasMenu && (
-                                        <ChevronDown className="w-3.5 h-3.5 opacity-40 group-hover:translate-y-0.5 transition-transform group-hover:opacity-70" />
-                                    )}
-                                </a>
-                            ))}
                         </div>
                     </div>
 

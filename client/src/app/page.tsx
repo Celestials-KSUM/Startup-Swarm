@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import {
   BarChart3,
   ShieldCheck,
@@ -16,32 +19,20 @@ import {
   ExternalLink
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import CaseStudiesDialog from "@/components/CaseStudiesDialog";
 
 export default function Home() {
+  const [isCaseStudiesOpen, setIsCaseStudiesOpen] = useState(false);
+
   return (
     <div className="relative min-h-screen bg-white text-[#111827]">
       <Navbar />
 
-
+      <CaseStudiesDialog isOpen={isCaseStudiesOpen} onClose={() => setIsCaseStudiesOpen(false)} />
 
       {/* Hero Section with Ripple Background */}
       <section className="relative pt-32 pb-48 overflow-hidden ripple-bg">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          {/* Social Proof Bar */}
-          {/* <div className="flex justify-center mb-16">
-            <div className="social-proof-bar flex items-center gap-6 shadow-sm">
-              <div className="flex items-center gap-2 border-r pr-6 border-gray-200">
-                <span className="font-bold text-[#111827] text-lg italic">Gartner</span>
-              </div>
-              <p className="text-xs font-medium text-gray-600 hidden md:block">
-                Startup Swarm named a leader in the Gartner® Magic Quadrant™ for AI Accelerator Platforms, 2026
-              </p>
-              <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-gray-900 border border-gray-900 px-3 py-1 rounded ml-4 hover:bg-gray-900 hover:text-white transition-colors">
-                Access Report
-              </a>
-            </div>
-          </div> */}
-
           {/* Hero Content */}
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-6xl md:text-8xl font-bold leading-tight mb-8 tracking-tight text-[#111827]">
@@ -56,7 +47,10 @@ export default function Home() {
               <Link href="/architect" className="px-10 py-5 bg-[#111827] text-white rounded-full font-bold hover:bg-black transition-all uppercase tracking-[0.2em] text-xs flex items-center gap-3 shadow-xl shadow-gray-900/10 active:scale-95">
                 Get Started <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="px-10 py-5 bg-white/50 backdrop-blur-sm text-[#111827] border border-gray-200 rounded-full font-bold hover:bg-white hover:border-gray-300 transition-all uppercase tracking-[0.2em] text-xs flex items-center gap-3 active:scale-95">
+              <button
+                onClick={() => setIsCaseStudiesOpen(true)}
+                className="px-10 py-5 bg-white/50 backdrop-blur-sm text-[#111827] border border-gray-200 rounded-full font-bold hover:bg-white hover:border-gray-300 transition-all uppercase tracking-[0.2em] text-xs flex items-center gap-3 active:scale-95"
+              >
                 See Case Studies <ExternalLink className="w-4 h-4 opacity-50" />
               </button>
             </div>
@@ -216,32 +210,8 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-[#111827] cursor-pointer"><ArrowRight className="w-4 h-4" /></div>
               </div>
             </div>
-            <div>
-              <h5 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8 border-l-2 border-blue-600 pl-4">Platform</h5>
-              <ul className="space-y-4 text-gray-600">
-                <li className="hover:text-black cursor-pointer">Agent Studio</li>
-                <li className="hover:text-black cursor-pointer">Marketplace</li>
-                <li className="hover:text-black cursor-pointer">Enterprise API</li>
-                <li className="hover:text-black cursor-pointer">Security</li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8 border-l-2 border-emerald-600 pl-4">Solutions</h5>
-              <ul className="space-y-4 text-gray-600">
-                <li className="hover:text-black cursor-pointer">Incubators</li>
-                <li className="hover:text-black cursor-pointer">Venture Capital</li>
-                <li className="hover:text-black cursor-pointer">Founder Suite</li>
-                <li className="hover:text-black cursor-pointer">Corporate Innovation</li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-8 border-l-2 border-purple-600 pl-4">Resources</h5>
-              <ul className="space-y-4 text-gray-600">
-                <li className="hover:text-black cursor-pointer">Analyst Reports</li>
-                <li className="hover:text-black cursor-pointer">White Papers</li>
-                <li className="hover:text-black cursor-pointer">Documentation</li>
-                <li className="hover:text-black cursor-pointer">Support</li>
-              </ul>
+            <div className="md:col-span-3">
+              {/* Other columns removed to match simplified navigation */}
             </div>
           </div>
           <div className="pt-8 border-t border-gray-100 flex flex-col md:row items-center justify-between gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
