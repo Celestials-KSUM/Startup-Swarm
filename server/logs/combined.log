@@ -213,3 +213,13 @@
 2026-02-28 10:11:39 [http]: [0mGET /api/ai/history/f6906d35-4685-430f-b145-9fedefdde8a4 [32m200[0m 66.755 ms - 11077[0m
 2026-02-28 10:11:39 [http]: [0mGET /api/ai/history/f6906d35-4685-430f-b145-9fedefdde8a4 [36m304[0m 59.449 ms - -[0m
 2026-02-28 10:11:57 [http]: [0mGET /api/startup/chicken-stall [32m200[0m 75.226 ms - 1900[0m
+2026-02-28 10:34:47 [info]: ✅ MongoDB connected Successfully
+2026-02-28 10:34:47 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 10:35:17 [http]: [0mGET /api/ai/history/f6906d35-4685-430f-b145-9fedefdde8a4 [36m304[0m 155.884 ms - -[0m
+2026-02-28 10:37:55 [http]: [0mPOST /api/ai/chat [32m200[0m 117743.626 ms - 12814[0m
+2026-02-28 10:37:55 [http]: [0mGET /api/ai/history/75dd5c7a-86bb-46fe-9584-58c908ad3f90 [32m200[0m 133.317 ms - 12945[0m
+2026-02-28 10:37:55 [http]: [0mGET /api/ai/history/75dd5c7a-86bb-46fe-9584-58c908ad3f90 [36m304[0m 70.832 ms - -[0m
+2026-02-28 10:38:27 [http]: [0mGET /api/subscriptions/me [32m200[0m 63.484 ms - 86[0m
+2026-02-28 10:38:27 [http]: [0mGET /api/subscriptions/me [36m304[0m 70.068 ms - -[0m
+2026-02-28 10:38:29 [http]: [0mGET /api/ai/history/75dd5c7a-86bb-46fe-9584-58c908ad3f90 [36m304[0m 51.130 ms - -[0m
+2026-02-28 10:38:29 [http]: [0mGET /api/ai/history/75dd5c7a-86bb-46fe-9584-58c908ad3f90 [36m304[0m 64.562 ms - -[0m
