@@ -41,3 +41,21 @@ export const sendOtpEmail = async (email: string, otp: string) => {
         throw error;
     }
 };
+
+export const sendDailyNewsletter = async (email: string, subject: string, htmlContent: string) => {
+    const mailOptions = {
+        from: `"Startup Swarm Intel" <${config.SMTP_USER}>`,
+        to: email,
+        subject: subject,
+        html: htmlContent,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Newsletter sent successfully to %s: %s', email, info.messageId);
+        return info;
+    } catch (error) {
+        console.error('Error sending newsletter to %s:', email, error);
+        throw error;
+    }
+};

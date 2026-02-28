@@ -19,8 +19,10 @@ export const config = {
     SMTP_PASS: process.env.SMTP_PASS || "",
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
+    NEWS_DATA_API_KEY: process.env.NEWS_DATA_API_KEY || "",
+    OPEN_WEB_NINJA_API_KEY: process.env.OPEN_WEB_NINJA_API_KEY || "",
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
 };
-
 
 // Validation
 if (!config.MONGO_URI) {

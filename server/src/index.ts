@@ -4,12 +4,16 @@ import app from "./app";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
 import config from "./config/env";
+import { startNewsletterCron } from "./cron/newsletter.cron";
 
 const PORT = config.PORT;
 
 const startServer = async (): Promise<void> => {
     try {
         await connectDB();
+
+        // Start autonomous agents
+        startNewsletterCron();
 
         app.listen(PORT, () => {
             logger.info(
