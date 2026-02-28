@@ -6,6 +6,20 @@
 
 ---
 
+---
+
+## 🌌 The Celestials Team
+
+**Startup Swarm** is designed and engineered with ❤️ by **Team Celestials**:
+
+- **Mohammed Shahinsha**
+- **Shamveel P**
+- **Akshay C**
+- **Hina Hanan**
+- **Sangeeth**
+
+---
+
 ## 🌟 Key Features
 
 ### 🤖 Autonomous Agent Swarm
@@ -130,19 +144,7 @@ TWOSLIDES_API_KEY=sk-2slides-...
 |---|---|
 | ![Questionnaire](imgs/step1.png) | ![Blueprint](imgs/step2.png) |
 
----
 
-## 🌌 The Celestials Team
-
-**Startup Swarm** is designed and engineered with ❤️ by **Team Celestials**:
-
-- **Mohammed Shahinsha**
-- **Shamveel P**
-- **Akshay C**
-- **Hina Hanan**
-- **Sangeeth**
-
----
 
 ## 📞 Support & Community
 
