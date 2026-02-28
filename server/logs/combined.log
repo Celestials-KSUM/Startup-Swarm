@@ -199,3 +199,17 @@
 2026-02-28 05:52:09 [info]: ✅ MongoDB connected Successfully
 2026-02-28 05:52:09 [info]: 🚀 Server running in development mode on port 5000
 2026-02-28 05:52:38 [http]: [0mGET /api/ai/history/9c5a1b27-9813-4da5-aba0-d9bd1123f4b7 [36m304[0m 8.854 ms - -[0m
+2026-02-28 10:00:16 [info]: ✅ MongoDB connected Successfully
+2026-02-28 10:00:16 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 10:02:38 [http]: [0mPOST /api/ai/chat [33m401[0m 2.475 ms - 24[0m
+2026-02-28 10:03:17 [http]: [0mGET /api/auth/google [36m302[0m 1.249 ms - 0[0m
+2026-02-28 10:03:42 [http]: [0mGET /api/auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0AfrIepDiyKaufi-T4NbRgzOdwLOzhHHrU8OJxySz3tACtrSMzPZVEMRK_yMrHN8YbRL1VA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=consent [36m302[0m 4039.383 ms - 285[0m
+2026-02-28 10:06:12 [http]: [0mPOST /api/ai/chat [31m500[0m 102142.212 ms - 454[0m
+2026-02-28 10:08:49 [info]: ✅ MongoDB connected Successfully
+2026-02-28 10:08:49 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 10:09:14 [info]: ✅ MongoDB connected Successfully
+2026-02-28 10:09:14 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 10:11:37 [http]: [0mPOST /api/ai/chat [32m200[0m 84564.432 ms - 10824[0m
+2026-02-28 10:11:39 [http]: [0mGET /api/ai/history/f6906d35-4685-430f-b145-9fedefdde8a4 [32m200[0m 66.755 ms - 11077[0m
+2026-02-28 10:11:39 [http]: [0mGET /api/ai/history/f6906d35-4685-430f-b145-9fedefdde8a4 [36m304[0m 59.449 ms - -[0m
+2026-02-28 10:11:57 [http]: [0mGET /api/startup/chicken-stall [32m200[0m 75.226 ms - 1900[0m

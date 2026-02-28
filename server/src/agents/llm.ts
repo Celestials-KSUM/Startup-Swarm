@@ -1,16 +1,23 @@
 import { ChatGroq } from "@langchain/groq";
 import config from "../config/env";
 
-export const getStructuralLlm = () => {
-    const apiKey = config.GROQ_API_KEY || process.env.GROQ_API_KEY;
+let currentKeyIndex = 0;
 
-    if (!apiKey) {
-        throw new Error("GROQ_API_KEY is missing. Please check your .env file.");
+export const getStructuralLlm = () => {
+    const keys = config.GROQ_API_KEYS;
+
+    if (!keys || keys.length === 0) {
+        throw new Error("GROQ_API_KEYS are missing. Please check your .env file.");
     }
 
+    const apiKey = keys[currentKeyIndex];
+    currentKeyIndex = (currentKeyIndex + 1) % keys.length;
+
     return new ChatGroq({
-        apiKey: apiKey.trim(),
+        apiKey: apiKey,
         model: "llama-3.3-70b-versatile",
         temperature: 0.1,
+        maxRetries: 2,
+        maxTokens: 1500, // Caps Groq's token footprint reservation
     });
 };

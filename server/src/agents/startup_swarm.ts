@@ -1,43 +1,63 @@
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { AgentStateSchema } from "./state";
 
-// Import Predictive Grouped Agents
+// Import all Predictive Agents
 import { marketStrategyNode } from "./predictive/market_strategy";
 import { techOpsNode } from "./predictive/tech_ops";
 import { riskSustainabilityNode } from "./predictive/risk_sustainability";
 import { blueprintNode } from "./predictive/blueprint";
 
+// Import all Execution Agents
 import { operationsNode } from "./execution/operations";
 import { websiteBuilderNode } from "./execution/website_builder";
+import { investorOutreachNode } from "./execution/investor_outreach";
+import { outreachNode } from "./execution/outreach";
+import { companyRegistrationNode } from "./execution/registration";
+
+// Wrapper nodes to run grouped agents concurrently 
+const predictiveGroupNode = async (state: any) => {
+    const results = await Promise.all([
+        marketStrategyNode(state),
+        techOpsNode(state),
+        riskSustainabilityNode(state)
+    ]);
+    return {
+        // Merge their analysis payload deeply
+        analysis: Object.assign({}, ...results.map(r => r.analysis))
+    };
+};
+
+const executionGroupNode = async (state: any) => {
+    // Run first batch of 3 (consumes 3 distinct API keys)
+    const batch1 = await Promise.all([
+        operationsNode(state),
+        websiteBuilderNode(state),
+        investorOutreachNode(state)
+    ]);
+
+    // Run second batch of 2 (re-uses API keys without spiking single-minute limits instantly)
+    const batch2 = await Promise.all([
+        outreachNode(state),
+        companyRegistrationNode(state)
+    ]);
+
+    const results = [...batch1, ...batch2];
+    return {
+        // Merge the execution_results explicitly
+        execution_results: Object.assign({}, ...results.map(r => r.execution_results))
+    };
+};
 
 export const createStartupSwarm = () => {
-    // Build the Graph using chaining for proper TS inference
     const builder = new StateGraph(AgentStateSchema)
-        // Add Predictive Grouped Nodes
-        .addNode("market_strategy", marketStrategyNode)
-        .addNode("tech_ops", techOpsNode)
-        .addNode("risk_sustainability", riskSustainabilityNode)
+        .addNode("predictive_group", predictiveGroupNode)
         .addNode("blueprint_node", blueprintNode)
+        .addNode("execution_group", executionGroupNode)
 
-        // Add Execution Nodes
-        .addNode("operations", operationsNode)
-        .addNode("website_builder", websiteBuilderNode)
-
-        // Initial Sequential Flow instead of Parallel to avoid Groq Rate Constraints
-        .addEdge(START, "market_strategy")
-        .addEdge("market_strategy", "tech_ops")
-        .addEdge("tech_ops", "risk_sustainability")
-
-        // Transition to Blueprint
-        .addEdge("risk_sustainability", "blueprint_node")
-
-        // Fan-Out to Execution Nodes (2 Nodes)
-        .addEdge("blueprint_node", "operations")
-        .addEdge("blueprint_node", "website_builder")
-
-        // Fan-In to END from Execution Nodes
-        .addEdge("operations", END)
-        .addEdge("website_builder", END);
+        .addEdge(START, "predictive_group")
+        .addEdge("predictive_group", "blueprint_node")
+        .addEdge("blueprint_node", "execution_group")
+        .addEdge("execution_group", END);
 
     return builder.compile();
 };

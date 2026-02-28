@@ -68,87 +68,11 @@ const wikipediaRegulatorySearchTool = tool(
     }
 );
 
-// SimilarWeb SEO Insights Tool
-const similarWebSeoTool = tool(
-    async ({ domain }) => {
-        return new Promise<string>((resolve, reject) => {
-            const options = {
-                method: 'GET',
-                hostname: 'similarweb-insights.p.rapidapi.com',
-                port: null,
-                path: `/seo?domain=${encodeURIComponent(domain)}`,
-                headers: {
-                    'x-rapidapi-key': process.env.RAPIDAPI_KEY || '613a965ba4mshe78fd35cb8a5842p1ad7f3jsne7f5128cdbe3',
-                    'x-rapidapi-host': 'similarweb-insights.p.rapidapi.com'
-                }
-            };
-
-            const req = https.request(options, function (res) {
-                const chunks: Buffer[] = [];
-                res.on('data', function (chunk) {
-                    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-                });
-                res.on('end', function () {
-                    const body = Buffer.concat(chunks);
-                    resolve(body.toString());
-                });
-            });
-
-            req.on('error', (e) => resolve("Error fetching SimilarWeb SEO data: " + e.message));
-            req.end();
-        });
-    },
-    {
-        name: "similar_web_seo",
-        description: "Fetch SEO insights and rank metrics for a specific competitor's domain from Similarweb. Use this to gauge distribution, virality, competition strength, and go-to-market traffic trends. For the domain, provide the domain name without https (e.g. 'stripe.com')",
-        schema: z.object({
-            domain: z.string().describe("The competitor website domain (e.g., 'stripe.com').")
-        })
-    }
-);
-
-// Reddit Search Tool
-const redditSearchTool = tool(
-    async ({ query }) => {
-        return new Promise<string>((resolve, reject) => {
-            const options = {
-                method: 'GET',
-                hostname: 'reddit34.p.rapidapi.com',
-                port: null,
-                path: `/getSearchSubreddits?query=${encodeURIComponent(query)}`,
-                headers: {
-                    'x-rapidapi-key': process.env.RAPIDAPI_KEY || '613a965ba4mshe78fd35cb8a5842p1ad7f3jsne7f5128cdbe3',
-                    'x-rapidapi-host': 'reddit34.p.rapidapi.com'
-                }
-            };
-
-            const req = https.request(options, function (res) {
-                const chunks: Buffer[] = [];
-                res.on('data', function (chunk) {
-                    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-                });
-                res.on('end', function () {
-                    const body = Buffer.concat(chunks);
-                    resolve(body.toString());
-                });
-            });
-
-            req.on('error', (e) => resolve("Error fetching Reddit data: " + e.message));
-            req.end();
-        });
-    },
-    {
-        name: "reddit_search",
-        description: "Search Reddit for top subreddits to evaluate potential marketing distribution channels and communities.",
-        schema: z.object({
-            query: z.string().describe("The problem space, industry, or competitor keyword to search for on Reddit.")
-        })
-    }
-);
+// SimilarWeb and Reddit Search tools removed for token optimization
 
 export const riskSustainabilityNode = async (state: AgentState): Promise<Partial<AgentState>> => {
     const rawLlm = getStructuralLlm();
-    const tools = [worldBankIndicatorsTool, wikipediaRegulatorySearchTool, similarWebSeoTool, redditSearchTool];
+    const tools = [worldBankIndicatorsTool, wikipediaRegulatorySearchTool];
     const llm = rawLlm.bindTools(tools);
 
     const prompt = `You are an elite Autonomous Risk & Sustainability Agent suite.
@@ -161,7 +85,7 @@ Perform deep analytical research across these 4 domains.
 4. data_ai: "Is the data strategy safe?" (Privacy, security, ML risk)
 
 CRITICAL PERFORMANCE INSTRUCTION (MINIMIZE API CALLS):
-1. ONLY utilize your bound tools (world_bank_indicators, wikipedia_regulatory_search, similar_web_seo, reddit_search) if you definitively lack factual context. If you understand the space, SKIP tools to save time.
+1. ONLY utilize your bound tools (world_bank_indicators, wikipedia_regulatory_search) if you definitively lack factual context. If you understand the space, SKIP tools to save time.
 2. If you must gather competitive or macroeconomic data, execute ALL tool calls sequentially or parallel within ONE SINGLE TURN. Do NOT chain tool calls back-to-back.
 3. You MUST output the FINAL JSON payload immediately afterward.
 
@@ -190,10 +114,6 @@ CRITICAL JSON OUTPUT REQUIREMENT:
                     toolResult = await worldBankIndicatorsTool.invoke(toolCall as any);
                 } else if (toolCall.name === "wikipedia_regulatory_search") {
                     toolResult = await wikipediaRegulatorySearchTool.invoke(toolCall as any);
-                } else if (toolCall.name === "similar_web_seo") {
-                    toolResult = await similarWebSeoTool.invoke(toolCall as any);
-                } else if (toolCall.name === "reddit_search") {
-                    toolResult = await redditSearchTool.invoke(toolCall as any);
                 }
 
                 messages.push(

@@ -61,7 +61,7 @@ async function getCheckpointer() {
 
 export async function createAgent() {
     const llm = new ChatGroq({
-        apiKey: config.GROQ_API_KEY,
+        apiKey: config.GROQ_API_KEYS[0],
         model: "llama-3.3-70b-versatile",
         temperature: 0.1,
     });

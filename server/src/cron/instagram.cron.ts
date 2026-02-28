@@ -19,7 +19,7 @@ export const executeInstagramGrowthAgent = async () => {
         const db = mongoose.connection.db;
         if (!db) return;
 
-        const apiKey = config.GROQ_API_KEY.trim();
+        const apiKey = config.GROQ_API_KEYS[0];
         if (!apiKey) return;
 
         const llm = new ChatGroq({

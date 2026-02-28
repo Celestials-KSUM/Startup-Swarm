@@ -19,9 +19,9 @@ export const executeNewsletterAgent = async () => {
             return;
         }
 
-        const apiKey = config.GROQ_API_KEY.trim();
+        const apiKey = config.GROQ_API_KEYS[0];
         if (!apiKey) {
-            console.error("No GROQ_API_KEY setup for newsletter.");
+            console.error("No GROQ_API_KEYS setup for newsletter.");
             return;
         }
 
