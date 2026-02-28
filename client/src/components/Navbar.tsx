@@ -137,7 +137,7 @@ export default function Navbar() {
                                 >
                                     Log in
                                 </Link>
-                                <Link href="/register">
+                                <Link href="/architect">
                                     <button className="group relative inline-flex items-center gap-1.5 px-5 py-2.5 bg-gray-900 text-white text-sm font-bold rounded-full transition-all hover:bg-black active:scale-[0.98] shadow-lg shadow-gray-200">
                                         <span>Get Started</span>
                                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

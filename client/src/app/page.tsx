@@ -189,9 +189,11 @@ export default function Home() {
                 Synthetic Market Validation
               </div>
             </div>
-            <button className="px-10 py-5 bg-[#111827] text-white rounded-full font-bold hover:bg-black transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 shadow-xl shadow-gray-900/10 active:scale-95">
-              Get Started with Swarm <ArrowRight className="w-4 h-4" />
-            </button>
+            <Link href="/architect" className="inline-flex">
+              <button className="px-10 py-5 bg-[#111827] text-white rounded-full font-bold hover:bg-black transition-all uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 shadow-xl shadow-gray-900/10 active:scale-95">
+                Get Started with Swarm <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
           </div>
         </div>
       </section>
