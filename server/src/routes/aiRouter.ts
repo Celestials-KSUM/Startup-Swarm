@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import { createStartupSwarm, getDiscoveryInsight } from "../agents/startup_swarm";
 import { authMiddleware, AuthRequest, requireAuth } from "../middlewares/auth.middleware";
+import User from "../models/user.model";
 
 const aiRouter = Router();
 
@@ -25,6 +26,44 @@ aiRouter.post("/chat", async (req: AuthRequest, res: Response) => {
         }
 
         const isBlueprintRequest = (message && message.toLowerCase().includes("blueprint")) || structuredData;
+
+        // SUBSCRIPTION CHECK BEFORE GENERATION
+        if (isBlueprintRequest) {
+            if (!req.user || !req.user.id) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+
+            const userParams = await User.findById(req.user.id);
+            if (!userParams) {
+                return res.status(404).json({ error: "User not found" });
+            }
+
+            // Reset logic for new month
+            const cycleStart = new Date(userParams.cycleStartDate);
+            const now = new Date();
+            const daysSinceStart = Math.floor((now.getTime() - cycleStart.getTime()) / (1000 * 60 * 60 * 24));
+
+            if (daysSinceStart >= 30) {
+                userParams.startupsCountThisMonth = 0;
+                userParams.cycleStartDate = now;
+                await userParams.save();
+            }
+
+            // Check limits based on plan
+            const planLimits = {
+                free: 1,
+                pro: 3,
+                pro_plus: 5
+            };
+            const userLimit = planLimits[userParams.subscriptionPlan || "free"];
+
+            if (userParams.startupsCountThisMonth >= userLimit) {
+                return res.status(403).json({
+                    error: "LIMIT_REACHED",
+                    message: `You have reached your ${userLimit} startup limit for the ${userParams.subscriptionPlan.toUpperCase()} plan this month. Please upgrade your plan.`
+                });
+            }
+        }
 
         if (isBlueprintRequest) {
             // Run the full Agent Swarm

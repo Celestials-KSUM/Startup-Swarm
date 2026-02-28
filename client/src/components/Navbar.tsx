@@ -63,98 +63,98 @@ export default function Navbar() {
                             <div className="w-8 h-8 bg-[#111827] rounded-lg flex items-center justify-center transition-transform group-hover:rotate-12 group-hover:scale-110 duration-300">
                                 <BrainCircuit className="w-5 h-5 text-white" />
                             </div>
-                            <span className="text-xl font-bold tracking-tight text-[#111827]">Startup Swarm</span>
+                            <span className="font-extrabold text-xl tracking-tight hidden sm:block">Swarm</span>
                         </Link>
-
-                        <div className="hidden lg:flex items-center gap-1 text-sm font-medium text-gray-500">
-                            {[
-                                { name: "Solutions", hasMenu: true },
-                                { name: "Platform", hasMenu: true },
-                                { name: "Resources", hasMenu: true },
-                                { name: "Pricing", hasMenu: false }
-                            ].map((item) => (
-                                <a
-                                    key={item.name}
-                                    href="#"
-                                    className="px-4 py-2 rounded-full hover:bg-gray-900/5 hover:text-black transition-all flex items-center gap-1 group"
-                                >
-                                    {item.name}
-                                    {item.hasMenu && <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover:translate-y-0.5 transition-transform" />}
-                                </a>
-                            ))}
-                        </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-sm font-medium">
-                        {!mounted ? null : token && user ? (
-                            <div className="relative" ref={dropdownRef}>
-                                <button
-                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors"
-                                >
-                                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                                        <User className="w-4 h-4" />
-                                    </div>
-                                    <span className="text-[#111827] font-semibold text-sm">
-                                        {getEmailPrefix(user.email)}
-                                    </span>
-                                    <ChevronDown className={`w-4 h-4 transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
-                                </button>
-
-                                {isProfileOpen && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
-                                        <div className="p-2">
-                                            <Link
-                                                href="/history"
-                                                onClick={() => setIsProfileOpen(false)}
-                                                className="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
-                                            >
-                                                <History className="w-4 h-4" />
-                                                <span className="font-medium">My History</span>
-                                            </Link>
-                                            <div className="h-px bg-gray-100 my-1"></div>
-                                            <button
-                                                onClick={() => {
-                                                    handleLogout();
-                                                    setIsProfileOpen(false);
-                                                }}
-                                                className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
-                                            >
-                                                <LogOut className="w-4 h-4" />
-                                                <span className="font-medium">Logout</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <>
-                                <Link
-                                    href="/login"
-                                    className="hidden sm:block px-6 py-2.5 rounded-full hover:bg-gray-900/5 text-gray-600 hover:text-[#111827] transition-all font-semibold"
-                                >
-                                    Log in
-                                </Link>
-                                <Link href="/register">
-                                    <button className="relative group overflow-hidden px-8 py-3 bg-[#111827] text-white rounded-full font-bold transition-all hover:pr-10 active:scale-95 shadow-xl shadow-gray-900/10">
-                                        <span className="relative z-10 uppercase text-[10px] tracking-[0.15em]">Get Started</span>
-                                        <div className="absolute top-1/2 -translate-y-1/2 right-4 opacity-0 group-hover:opacity-100 transition-all">
-                                            <ArrowRight className="w-4 h-4" />
-                                        </div>
-                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                    </button>
-                                </Link>
-                            </>
-                        )}
-
-                        <button className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                            <Menu className="w-6 h-6" />
-                        </button>
+                    <div className="hidden lg:flex items-center gap-1 text-sm font-medium text-gray-500">
+                        <Link href="/pricing" className="px-4 py-2 font-black rounded-full hover:bg-gray-900/5 hover:text-black transition-all flex items-center gap-1 group">
+                            Pricing
+                        </Link>
+                        {[
+                            { name: "Solutions", hasMenu: true },
+                            { name: "Platform", hasMenu: true },
+                            { name: "Resources", hasMenu: true }
+                        ].map((item) => (
+                            <a
+                                key={item.name}
+                                href="#"
+                                className="px-4 py-2 rounded-full hover:bg-gray-900/5 hover:text-black transition-all flex items-center gap-1 group"
+                            >
+                                {item.name}
+                                {item.hasMenu && <ChevronDown className="w-3.5 h-3.5 opacity-50 group-hover:translate-y-0.5 transition-transform" />}
+                            </a>
+                        ))}
                     </div>
                 </div>
+
+                <div className="flex items-center gap-3 text-sm font-medium">
+                    {!mounted ? null : token && user ? (
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200 hover:bg-gray-200 transition-colors"
+                            >
+                                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                    <User className="w-4 h-4" />
+                                </div>
+                                <span className="text-[#111827] font-semibold text-sm">
+                                    {getEmailPrefix(user.email)}
+                                </span>
+                                <ChevronDown className={`w-4 h-4 transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
+                            </button>
+
+                            {isProfileOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+                                    <div className="p-2">
+                                        <Link
+                                            href="/history"
+                                            onClick={() => setIsProfileOpen(false)}
+                                            className="flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
+                                        >
+                                            <History className="w-4 h-4" />
+                                            <span className="font-medium">My History</span>
+                                        </Link>
+                                        <div className="h-px bg-gray-100 my-1"></div>
+                                        <button
+                                            onClick={() => {
+                                                handleLogout();
+                                                setIsProfileOpen(false);
+                                            }}
+                                            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            <span className="font-medium">Logout</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                className="hidden sm:block px-6 py-2.5 rounded-full hover:bg-gray-900/5 text-gray-600 hover:text-[#111827] transition-all font-semibold"
+                            >
+                                Log in
+                            </Link>
+                            <Link href="/register">
+                                <button className="relative group overflow-hidden px-8 py-3 bg-[#111827] text-white rounded-full font-bold transition-all hover:pr-10 active:scale-95 shadow-xl shadow-gray-900/10">
+                                    <span className="relative z-10 uppercase text-[10px] tracking-[0.15em]">Get Started</span>
+                                    <div className="absolute top-1/2 -translate-y-1/2 right-4 opacity-0 group-hover:opacity-100 transition-all">
+                                        <ArrowRight className="w-4 h-4" />
+                                    </div>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                </button>
+                            </Link>
+                        </>
+                    )}
+
+                    <button className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+                        <Menu className="w-6 h-6" />
+                    </button>
+                </div>
             </nav>
-
-
 
             {/* Subtle bottom shine effect */}
             <div className={`max-w-7xl mx-auto h-[1px] bg-gradient-to-r from-transparent via-blue-400/20 to-transparent transition-opacity duration-1000 ${scrolled ? "opacity-100" : "opacity-0"}`} />

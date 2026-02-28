@@ -21,6 +21,10 @@ router.post("/instagram", authMiddleware, async (req: AuthRequest, res: Response
             return res.status(404).json({ error: "User not found." });
         }
 
+        if (user.subscriptionPlan !== "pro_plus") {
+            return res.status(403).json({ error: "UPGRADE_REQUIRED", message: "Instagram Autonomous Marketing is a PRO+ exclusive feature. Please upgrade your plan." });
+        }
+
         user.instagramAccountId = instagramAccountId;
         user.instagramAccessToken = instagramAccessToken;
         await user.save();

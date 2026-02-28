@@ -102,9 +102,19 @@ export default function ArchitectPage() {
                     description: "Strategic analysis completed successfully.",
                 });
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Blueprint error:", error);
-            alert("Strategic connection lost. Please try again.");
+            if (error.response?.data?.error === "LIMIT_REACHED") {
+                toast.error(error.response.data.message || "Plan limit reached.", {
+                    duration: 5000,
+                    action: {
+                        label: "Upgrade",
+                        onClick: () => router.push("/pricing")
+                    }
+                });
+            } else {
+                alert("Strategic connection lost. Please try again.");
+            }
         } finally {
             setSubmitting(false);
         }

@@ -10,6 +10,10 @@ export interface IUser extends Document {
     avatar?: string;
     instagramAccountId?: string;
     instagramAccessToken?: string;
+    subscriptionPlan: "free" | "pro" | "pro_plus";
+    subscriptionExpiresAt?: Date;
+    startupsCountThisMonth: number;
+    cycleStartDate: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -52,6 +56,22 @@ const UserSchema: Schema = new Schema(
         },
         instagramAccessToken: {
             type: String,
+        },
+        subscriptionPlan: {
+            type: String,
+            enum: ["free", "pro", "pro_plus"],
+            default: "free",
+        },
+        subscriptionExpiresAt: {
+            type: Date,
+        },
+        startupsCountThisMonth: {
+            type: Number,
+            default: 0,
+        },
+        cycleStartDate: {
+            type: Date,
+            default: Date.now,
         },
     },
     { timestamps: true }

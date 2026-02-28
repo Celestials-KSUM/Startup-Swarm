@@ -11,6 +11,7 @@ import { errorHandler } from "./middlewares/error.middleware";
 import config from "./config/env";
 import authRouter from "./routes/auth.routes";
 import startupRouter from "./routes/startupRouter";
+import subscriptionRouter from "./routes/subscriptionRouter";
 import passport from "passport";
 import "./config/passport";
 
@@ -63,6 +64,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/ai", aiRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/startup", startupRouter);
+app.use("/api/subscriptions", subscriptionRouter);
 
 
 app.use(errorHandler);
