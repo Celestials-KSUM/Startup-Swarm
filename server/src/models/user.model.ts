@@ -8,6 +8,8 @@ export interface IUser extends Document {
     otpExpiresAt?: Date;
     googleId?: string;
     avatar?: string;
+    instagramAccountId?: string;
+    instagramAccessToken?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -43,6 +45,12 @@ const UserSchema: Schema = new Schema(
             sparse: true,
         },
         avatar: {
+            type: String,
+        },
+        instagramAccountId: {
+            type: String,
+        },
+        instagramAccessToken: {
             type: String,
         },
     },

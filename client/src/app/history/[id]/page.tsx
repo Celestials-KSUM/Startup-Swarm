@@ -14,7 +14,8 @@ import {
     Building2,
     Handshake,
     Coins,
-    Construction
+    Construction,
+    Instagram
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import Navbar from "@/components/Navbar";
@@ -27,6 +28,12 @@ export default function SessionBlueprintPage() {
     const [blueprint, setBlueprint] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // Instagram state
+    const [igId, setIgId] = useState("");
+    const [igToken, setIgToken] = useState("");
+    const [isConnecting, setIsConnecting] = useState(false);
+    const [isIgConnected, setIsIgConnected] = useState(false);
 
     useEffect(() => {
         if (!threadId) return;
@@ -75,6 +82,26 @@ export default function SessionBlueprintPage() {
             </div>
         </div>
     );
+
+    const handleConnectIG = async () => {
+        if (!igId || !igToken) {
+            toast.error("Please fill both Instagram ID and Access Token");
+            return;
+        }
+        setIsConnecting(true);
+        try {
+            await axios.post("http://localhost:5000/api/users/instagram", {
+                instagramAccountId: igId,
+                instagramAccessToken: igToken
+            }, { withCredentials: true });
+            toast.success("Instagram Connected! Growth Agent is now active.");
+            setIsIgConnected(true);
+        } catch (err: any) {
+            toast.error(err.response?.data?.error || "Failed to connect Instagram.");
+        } finally {
+            setIsConnecting(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -226,6 +253,52 @@ export default function SessionBlueprintPage() {
 
                         {/* Sidebar: Outreach & Revenue */}
                         <div className="space-y-8">
+
+                            {/* Instagram Connect Agent */}
+                            <div className="bg-gradient-to-br from-fuchsia-600 to-pink-600 p-8 rounded-[2rem] shadow-xl text-white relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-12 -translate-y-1/2 translate-x-1/2 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all"></div>
+                                <div className="relative z-10">
+                                    <h3 className="text-lg font-black mb-2 flex items-center gap-2">
+                                        <Instagram className="w-6 h-6" />
+                                        Social Growth Agent
+                                    </h3>
+                                    <p className="text-pink-100 text-xs mb-6 font-medium">Connect your Instagram Business account to let our swarm autonomously generate & post optimized branding assets daily.</p>
+
+                                    {isIgConnected ? (
+                                        <div className="bg-white/20 border border-white/30 rounded-xl p-4 flex items-center justify-center gap-2 backdrop-blur-sm">
+                                            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                                            <span className="text-sm font-bold uppercase tracking-widest">Agent Active</span>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            <input
+                                                type="text"
+                                                placeholder="Instagram Account ID"
+                                                value={igId}
+                                                onChange={(e) => setIgId(e.target.value)}
+                                                className="w-full bg-white/10 border border-pink-400/30 rounded-lg px-4 py-2.5 text-sm placeholder:text-pink-200 focus:outline-none focus:ring-2 focus:ring-white"
+                                            />
+                                            <input
+                                                type="password"
+                                                placeholder="Long-Lived Access Token"
+                                                value={igToken}
+                                                onChange={(e) => setIgToken(e.target.value)}
+                                                className="w-full bg-white/10 border border-pink-400/30 rounded-lg px-4 py-2.5 text-sm placeholder:text-pink-200 focus:outline-none focus:ring-2 focus:ring-white"
+                                            />
+                                            <button
+                                                onClick={handleConnectIG}
+                                                disabled={isConnecting}
+                                                className="w-full bg-white text-pink-600 font-bold text-sm px-4 py-3 rounded-xl hover:bg-gray-50 flex items-center justify-center gap-2 transition-transform active:scale-95 disabled:opacity-70 disabled:active:scale-100"
+                                            >
+                                                {isConnecting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Deploy Agent"}
+                                            </button>
+                                            <a href="https://developers.facebook.com/docs/instagram-api/getting-started" target="_blank" rel="noopener noreferrer" className="block text-center text-[10px] text-pink-200 hover:text-white transition-colors underline underline-offset-2 mt-2">
+                                                How do I get my Token & ID?
+                                            </a>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                             {blueprint.execution?.outreach && (
                                 <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
                                     <h3 className="text-lg font-black mb-6 flex items-center gap-2">

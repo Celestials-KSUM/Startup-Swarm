@@ -5,6 +5,7 @@ import connectDB from "./config/db";
 import logger from "./utils/logger";
 import config from "./config/env";
 import { startNewsletterCron } from "./cron/newsletter.cron";
+import { startInstagramCron } from "./cron/instagram.cron";
 
 const PORT = config.PORT;
 
@@ -14,6 +15,7 @@ const startServer = async (): Promise<void> => {
 
         // Start autonomous agents
         startNewsletterCron();
+        startInstagramCron();
 
         app.listen(PORT, () => {
             logger.info(

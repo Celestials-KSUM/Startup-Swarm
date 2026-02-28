@@ -22,6 +22,9 @@ export const config = {
     NEWS_DATA_API_KEY: process.env.NEWS_DATA_API_KEY || "",
     OPEN_WEB_NINJA_API_KEY: process.env.OPEN_WEB_NINJA_API_KEY || "",
     GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || "",
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || "",
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || "",
 };
 
 // Validation

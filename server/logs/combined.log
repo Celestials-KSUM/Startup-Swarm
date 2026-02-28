@@ -109,3 +109,93 @@
 2026-02-28 03:45:20 [http]: [0mPOST /api/ai/chat [32m200[0m 35202.628 ms - 12591[0m
 2026-02-28 03:45:25 [http]: [0mGET /api/startup/krr-chicken-stall [32m200[0m 2.605 ms - 2097[0m
 2026-02-28 03:47:51 [http]: [0mGET /api/startup/krr-chicken-stall [36m304[0m 2.604 ms - -[0m
+2026-02-28 04:39:51 [info]: ✅ MongoDB connected Successfully
+2026-02-28 04:39:51 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 04:46:28 [http]: [0mPOST /api/ai/chat [31m500[0m 82231.982 ms - 446[0m
+2026-02-28 04:49:16 [http]: [0mPOST /api/ai/chat [31m500[0m 84131.029 ms - 447[0m
+2026-02-28 04:52:44 [info]: ✅ MongoDB connected Successfully
+2026-02-28 04:52:44 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 04:54:19 [http]: [0mPOST /api/ai/chat [32m200[0m 5449.331 ms - 10351[0m
+2026-02-28 04:54:33 [http]: [0mGET /api/startup/misthah-mian-king [32m200[0m 6.427 ms - 1464[0m
+2026-02-28 04:55:00 [http]: [0mGET /api/ai/my-history [32m200[0m 16.634 ms - 2[0m
+2026-02-28 04:55:00 [http]: [0mGET /api/ai/my-history [36m304[0m 3.646 ms - -[0m
+2026-02-28 04:55:06 [http]: [0mGET /api/ai/my-history [36m304[0m 3.577 ms - -[0m
+2026-02-28 04:55:06 [http]: [0mGET /api/ai/my-history [36m304[0m 3.055 ms - -[0m
+2026-02-28 04:55:20 [http]: [0mGET /api/ai/my-history [36m304[0m 2.531 ms - -[0m
+2026-02-28 04:55:20 [http]: [0mGET /api/ai/my-history [36m304[0m 2.292 ms - -[0m
+2026-02-28 04:56:38 [http]: [0mPOST /api/ai/chat [32m200[0m 4897.156 ms - 10060[0m
+2026-02-28 04:56:54 [http]: [0mGET /api/startup/misthahmian-edtech [32m200[0m 3.294 ms - 2066[0m
+2026-02-28 04:57:08 [http]: [0mGET /api/ai/my-history [36m304[0m 3.683 ms - -[0m
+2026-02-28 04:57:08 [http]: [0mGET /api/ai/my-history [36m304[0m 4.190 ms - -[0m
+2026-02-28 04:57:12 [http]: [0mGET /api/ai/my-history [36m304[0m 4.029 ms - -[0m
+2026-02-28 04:58:57 [http]: [0mGET /api/startup/misthah-the-mian [33m404[0m 2.442 ms - 29[0m
+2026-02-28 05:03:41 [http]: [0mGET /api/startup/misthah-the-mian [33m404[0m 2.361 ms - 29[0m
+2026-02-28 05:03:45 [http]: [0mGET /api/ai/my-history [36m304[0m 2.861 ms - -[0m
+2026-02-28 05:03:47 [http]: [0mGET /api/startup/misthahmian-edtech [36m304[0m 2.515 ms - -[0m
+2026-02-28 05:06:59 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:06:59 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:08:05 [http]: [0mGET /api/ai/my-history [36m304[0m 8.531 ms - -[0m
+2026-02-28 05:08:05 [http]: [0mGET /api/ai/my-history [36m304[0m 2.594 ms - -[0m
+2026-02-28 05:08:53 [http]: [0mGET /api/auth/google [36m302[0m 1.091 ms - 0[0m
+2026-02-28 05:08:57 [http]: [0mGET /api/auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0AfrIepBbNUGQx3BdFmASerNd1AkHa2Ap6M6rs0VTzVcXpRaI3nYQrZjPHGX2T0a_Nrnj-Q&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=3&prompt=none [36m302[0m 358.708 ms - 286[0m
+2026-02-28 05:10:09 [http]: [0mPOST /api/ai/chat [32m200[0m 5830.169 ms - 10451[0m
+2026-02-28 05:10:12 [http]: [0mGET /api/ai/history/5d6eea81-f607-4fa3-a78c-51899d025401 [32m200[0m 7.100 ms - 10663[0m
+2026-02-28 05:10:12 [http]: [0mGET /api/ai/history/5d6eea81-f607-4fa3-a78c-51899d025401 [36m304[0m 2.580 ms - -[0m
+2026-02-28 05:10:23 [http]: [0mGET /api/startup/floweris-fintech [32m200[0m 3.089 ms - 2071[0m
+2026-02-28 05:10:36 [http]: [0mGET /api/ai/history/5d6eea81-f607-4fa3-a78c-51899d025401 [36m304[0m 3.137 ms - -[0m
+2026-02-28 05:10:36 [http]: [0mGET /api/ai/history/5d6eea81-f607-4fa3-a78c-51899d025401 [36m304[0m 2.569 ms - -[0m
+2026-02-28 05:10:39 [http]: [0mGET /api/ai/my-history [36m304[0m 3.913 ms - -[0m
+2026-02-28 05:10:39 [http]: [0mGET /api/ai/my-history [36m304[0m 3.059 ms - -[0m
+2026-02-28 05:10:42 [http]: [0mGET /api/ai/my-history [36m304[0m 2.831 ms - -[0m
+2026-02-28 05:11:39 [http]: [0mGET /api/ai/history/5d6eea81-f607-4fa3-a78c-51899d025401 [36m304[0m 2.968 ms - -[0m
+2026-02-28 05:12:49 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:12:49 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:13:06 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:13:06 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:13:21 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:13:21 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:14:50 [http]: [0mGET /api/ai/my-history [36m304[0m 12.196 ms - -[0m
+2026-02-28 05:14:50 [http]: [0mGET /api/ai/my-history [36m304[0m 4.113 ms - -[0m
+2026-02-28 05:14:52 [http]: [0mGET /api/ai/my-history [36m304[0m 4.111 ms - -[0m
+2026-02-28 05:15:10 [http]: [0mPOST /api/ai/chat [32m200[0m 3918.893 ms - 10116[0m
+2026-02-28 05:15:10 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [32m200[0m 5.946 ms - 10349[0m
+2026-02-28 05:15:10 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 3.488 ms - -[0m
+2026-02-28 05:15:11 [http]: [0mGET /api/startup/rffrf-saas [32m200[0m 3.677 ms - 1671[0m
+2026-02-28 05:15:30 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.389 ms - -[0m
+2026-02-28 05:15:30 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.344 ms - -[0m
+2026-02-28 05:15:32 [http]: [0mGET /api/ai/my-history [32m200[0m 4.932 ms - 10349[0m
+2026-02-28 05:15:32 [http]: [0mGET /api/ai/my-history [36m304[0m 3.440 ms - -[0m
+2026-02-28 05:15:36 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.878 ms - -[0m
+2026-02-28 05:15:36 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.536 ms - -[0m
+2026-02-28 05:15:37 [http]: [0mGET /api/ai/my-history [36m304[0m 3.673 ms - -[0m
+2026-02-28 05:15:37 [http]: [0mGET /api/ai/my-history [36m304[0m 3.098 ms - -[0m
+2026-02-28 05:17:10 [http]: [0mGET /api/ai/my-history [36m304[0m 28.800 ms - -[0m
+2026-02-28 05:17:10 [http]: [0mGET /api/ai/my-history [36m304[0m 4.110 ms - -[0m
+2026-02-28 05:22:35 [http]: [0mGET /api/ai/my-history [36m304[0m 2.640 ms - -[0m
+2026-02-28 05:22:35 [http]: [0mGET /api/ai/my-history [36m304[0m 2.519 ms - -[0m
+2026-02-28 05:22:36 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.858 ms - -[0m
+2026-02-28 05:22:36 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.826 ms - -[0m
+2026-02-28 05:31:45 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:31:45 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:32:00 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:32:00 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:33:59 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:33:59 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:35:57 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:35:57 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:47:27 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:47:27 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:47:37 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:47:37 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:48:16 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:48:16 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:50:33 [http]: [0mGET /api/ai/my-history [36m304[0m 8.234 ms - -[0m
+2026-02-28 05:50:33 [http]: [0mGET /api/ai/my-history [36m304[0m 4.079 ms - -[0m
+2026-02-28 05:50:33 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 3.415 ms - -[0m
+2026-02-28 05:50:33 [http]: [0mGET /api/ai/history/85c8d24a-82f8-4b3f-91de-c4bac668e961 [36m304[0m 2.291 ms - -[0m
+2026-02-28 05:50:56 [http]: [0mPOST /api/ai/chat [32m200[0m 5270.890 ms - 10489[0m
+2026-02-28 05:50:56 [http]: [0mGET /api/ai/history/9c5a1b27-9813-4da5-aba0-d9bd1123f4b7 [32m200[0m 5.446 ms - 10724[0m
+2026-02-28 05:50:56 [http]: [0mGET /api/ai/history/9c5a1b27-9813-4da5-aba0-d9bd1123f4b7 [36m304[0m 3.409 ms - -[0m
+2026-02-28 05:52:09 [info]: ✅ MongoDB connected Successfully
+2026-02-28 05:52:09 [info]: 🚀 Server running in development mode on port 5000
+2026-02-28 05:52:38 [http]: [0mGET /api/ai/history/9c5a1b27-9813-4da5-aba0-d9bd1123f4b7 [36m304[0m 8.854 ms - -[0m
