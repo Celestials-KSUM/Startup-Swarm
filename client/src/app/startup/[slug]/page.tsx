@@ -18,7 +18,7 @@ const StartupPage = () => {
     useEffect(() => {
         const fetchWebsite = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/startup/${slug}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/startup/${slug}`);
                 setWebsite(response.data);
             } catch (err: any) {
                 console.error("Error fetching website:", err);
