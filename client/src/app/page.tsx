@@ -21,6 +21,7 @@ import {
 import Navbar from "@/components/Navbar";
 import CaseStudiesDialog from "@/components/CaseStudiesDialog";
 
+
 export default function Home() {
   const [isCaseStudiesOpen, setIsCaseStudiesOpen] = useState(false);
 
